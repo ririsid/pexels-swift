@@ -18,6 +18,7 @@ let package = Package(
             name: "Pexels"),
         .testTarget(
             name: "PexelsTests",
-            dependencies: ["Pexels"]),
+            dependencies: ["Pexels"],
+            resources: [.process("Resources")]),
     ]
 )

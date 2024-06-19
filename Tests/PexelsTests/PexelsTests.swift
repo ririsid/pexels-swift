@@ -11,4 +11,12 @@ final class PexelsTests: XCTestCase {
     func testAPIKeyExists() {
         XCTAssertNotNil(apiKey)
     }
+
+    func testDataFromJSON() {
+        let emptyJSONData = TestingUtility.dataFromJSON(forResource: "Empty")
+        let noFileData = TestingUtility.dataFromJSON(forResource: "No file")
+
+        XCTAssertNotNil(emptyJSONData)
+        XCTAssertNil(noFileData)
+    }
 }

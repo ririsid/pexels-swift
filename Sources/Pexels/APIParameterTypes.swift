@@ -1,32 +1,5 @@
 import Foundation
 
-// MARK: - APIParameterable
-
-public protocol APIParameterable {
-    var name: String { get }
-    var value: String? { get }
-}
-
-extension APIParameterable {
-    public var name: String {
-        String(describing: type(of: self)).lowercased()
-    }
-}
-
-extension APIParameterable where Self: RawRepresentable<String> {
-    public var value: String? {
-        rawValue
-    }
-}
-
-extension APIParameterable where Self: RawRepresentable<Int> {
-    public var value: String? {
-        String(rawValue)
-    }
-}
-
-// MARK: - APIParameterTypes
-
 public enum APIParameterTypes {
     public struct Query: RawRepresentable, APIParameterable {
         public typealias RawValue = String
@@ -201,5 +174,44 @@ public enum APIParameterTypes {
         private static func isValid(_ value: RawValue) -> Bool {
             return Self.min...Self.max ~= value
         }
+    }
+}
+
+extension APIParameterTypes.Page {
+    init?(_ page: Int?) {
+        guard let page else { return nil }
+        self.init(page)
+    }
+}
+
+extension APIParameterTypes.PerPage {
+    init?(_ perPage: Int?) {
+        guard let perPage else { return nil }
+        self.init(perPage)
+    }
+}
+
+// MARK: - APIParameterable
+
+public protocol APIParameterable {
+    var name: String { get }
+    var value: String? { get }
+}
+
+extension APIParameterable {
+    public var name: String {
+        String(describing: type(of: self)).lowercased()
+    }
+}
+
+extension APIParameterable where Self: RawRepresentable<String> {
+    public var value: String? {
+        rawValue
+    }
+}
+
+extension APIParameterable where Self: RawRepresentable<Int> {
+    public var value: String? {
+        String(rawValue)
     }
 }

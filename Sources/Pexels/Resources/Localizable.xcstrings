@@ -1,0 +1,17 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Required parameter '%@' is missing" : {
+      "comment" : "API endpoint error",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "필수 파리미터('%@')가 빠졌습니다."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

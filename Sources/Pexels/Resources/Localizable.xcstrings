@@ -11,6 +11,18 @@
           }
         }
       }
+    },
+    "The operation couldn’t be completed. (HTTPTypesFoundation.HTTPTypeConversionError)" : {
+      "comment" : "API error",
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "작업을 완료할 수 없습니다. (HTTPTypesFoundation.HTTPTypeConversionError)"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

@@ -1,0 +1,30 @@
+{
+  "configurations" : [
+    {
+      "id" : "A48FE048-0E3B-43A7-95EB-7F2E20B97A34",
+      "name" : "Test Scheme Action",
+      "options" : {
+        "environmentVariableEntries" : [
+          {
+            "key" : "PEXELS_API_KEY",
+            "value" : "<YOUR PEXELS API KEY>"
+          }
+        ],
+        "language" : "en"
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "PexelsTests",
+        "name" : "PexelsTests"
+      }
+    }
+  ],
+  "version" : 1
+}

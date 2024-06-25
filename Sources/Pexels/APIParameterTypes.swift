@@ -1,6 +1,7 @@
 import Foundation
 
 public enum APIParameterTypes {
+    /// The search query. `Ocean`, `Tigers`, `Pears`, etc.
     public struct Query: RawRepresentable, APIParameterable {
         public typealias RawValue = String
 
@@ -201,17 +202,5 @@ public protocol APIParameterable {
 extension APIParameterable {
     public var name: String {
         String(describing: type(of: self)).lowercased()
-    }
-}
-
-extension APIParameterable where Self: RawRepresentable<String> {
-    public var value: String? {
-        rawValue
-    }
-}
-
-extension APIParameterable where Self: RawRepresentable<Int> {
-    public var value: String? {
-        String(rawValue)
     }
 }

@@ -12,8 +12,8 @@ final class APIEndpointTests: XCTestCase {
 
     func testPhotosSearchWithEmptyQuery() {
         XCTAssertThrowsError(try APIEndpoint.Photos.search(query: "")) { error in
-            XCTAssert(error is APIEndpointError)
-            XCTAssert((error as! APIEndpointError) == APIEndpointError.missingRequiredParameter(name: "query"))
+            let error = try? XCTUnwrap(error as? APIEndpointError)
+            XCTAssert(error == .missingRequiredParameter(name: "query"))
         }
     }
 }

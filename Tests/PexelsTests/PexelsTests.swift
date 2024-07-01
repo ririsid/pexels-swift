@@ -23,7 +23,7 @@ final class PexelsTests: XCTestCase {
         XCTAssertNil(noFileData)
     }
 
-    func testUpdatingAPIRequest() async throws {
+    func testAPIRequestUpdatesThroughConfiguration() async throws {
         let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos"))
         let stubSession = StubResponseAPIRequestSession(data: photosData)
         let provider = APIProvider(configuration: configuration, session: stubSession)
@@ -80,6 +80,26 @@ final class PexelsTests: XCTestCase {
             let error = try XCTUnwrap(error as? APIError)
             XCTAssert(error == APIError.decodingError(localizedDescription: "The data couldn’t be read because it is missing."))
         }
+    }
+
+    func testPreviousPage() async throws {
+        let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos"))
+        let stubSession = StubResponseAPIRequestSession(data: photosData)
+        let provider = APIProvider(configuration: configuration, session: stubSession)
+        var request = try APIEndpoint.Photos.search(query: "nature")
+        let photos = try await provider.request(&request)
+
+        XCTAssertNil(photos.previousPage)
+    }
+
+    func testNextPage() async throws {
+        let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos"))
+        let stubSession = StubResponseAPIRequestSession(data: photosData)
+        let provider = APIProvider(configuration: configuration, session: stubSession)
+        var request = try APIEndpoint.Photos.search(query: "nature")
+        let photos = try await provider.request(&request)
+
+        XCTAssert(photos.nextPage == 2)
     }
 
     func testQuotaRemaining() async throws {

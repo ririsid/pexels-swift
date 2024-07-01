@@ -14,17 +14,33 @@ public struct Photos: Decodable, Equatable {
     public let totalResults: Int
     
     /// URL for the previous page of results, if applicable.
-    public let previousPage: URL?
+    public var previousPage: Int? {
+        guard let url = previousPageURL,
+              let value = url.queryParameterValue(for: "page"),
+              let page = Int(value) else { return nil }
+        return page
+    }
     
     /// URL for the next page of results, if applicable.
-    public let nextPage: URL?
+    public var nextPage: Int? {
+        guard let url = nextPageURL,
+              let value = url.queryParameterValue(for: "page"),
+              let page = Int(value) else { return nil }
+        return page
+    }
+    
+    /// URL for the previous page of results, if applicable.
+    private let previousPageURL: URL?
+    
+    /// URL for the next page of results, if applicable.
+    private let nextPageURL: URL?
     
     enum CodingKeys: String, CodingKey {
         case photos
         case page
         case perPage = "per_page"
         case totalResults = "total_results"
-        case previousPage = "prev_page"
-        case nextPage = "next_page"
+        case previousPageURL = "prev_page"
+        case nextPageURL = "next_page"
     }
 }

@@ -10,6 +10,9 @@ public final class APIProvider {
         return decoder
     }()
 
+    /// Your monthly quota.
+    private(set) var quota: APIQuota? = nil
+
     /// The configuration needed to set up the API Provider including all needed information for performing API requests.
     private let configuration: APIConfigurable
 
@@ -44,6 +47,7 @@ public final class APIProvider {
 
         do {
             let (data, response) = try await requestSession.data(for: request.httpRequest)
+            quota = APIQuota(headerFields: response.headerFields)
             guard response.status.kind == .successful else {
                 throw APIError.responseError(statusCode: response.status.code, reasonPhrase: response.status.reasonPhrase)
             }
@@ -55,6 +59,34 @@ public final class APIProvider {
                 throw APIError.httpTypeConversionError
             }
         }
+    }
+}
+
+// MARK: - APIQuota
+
+/// How many requests you have left in your monthly quota.
+public struct APIQuota {
+    /// Your total request limit for the monthly period.
+    public let requestLimit: Int
+
+    /// How many of these requests remain.
+    public let requestRemaining: Int
+
+    /// When the currently monthly period will roll over.
+    public let resetTime: Date
+
+    init?(headerFields: HTTPTypes.HTTPFields) {
+        guard let xRatelimitLimit = headerFields[.xRatelimitLimit],
+              let requestLimit = Int(xRatelimitLimit),
+              let xRatelimitRemaining = headerFields[.xRatelimitRemaining],
+              let requestRemaining = Int(xRatelimitRemaining),
+              let xRatelimitReset = headerFields[.xRatelimitReset],
+              let timestamp = Double(xRatelimitReset) else {
+            return nil
+        }
+        self.requestLimit = requestLimit
+        self.requestRemaining = requestRemaining
+        self.resetTime = Date(timeIntervalSince1970: timestamp)
     }
 }
 

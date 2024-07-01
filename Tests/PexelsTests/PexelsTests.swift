@@ -81,6 +81,34 @@ final class PexelsTests: XCTestCase {
             XCTAssert(error == APIError.decodingError(localizedDescription: "The data couldn’t be read because it is missing."))
         }
     }
+
+    func testQuotaRemaining() async throws {
+        let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos"))
+        let headerFields = HTTPTypes.HTTPFields([
+            .init(name: .xRatelimitLimit, value: "25000"),
+            .init(name: .xRatelimitRemaining, value: "24999"),
+            .init(name: .xRatelimitReset, value: String(Date.now.timeIntervalSince1970 + 1))
+        ])
+        let stubSession = StubResponseAPIRequestSession(data: photosData, headerFields: headerFields)
+        let provider = APIProvider(configuration: configuration, session: stubSession)
+        var request = try APIEndpoint.Photos.search(query: "nature")
+        let _ = try await provider.request(&request)
+
+        let quota = try XCTUnwrap(provider.quota)
+        XCTAssert(quota.requestLimit > 0)
+        XCTAssert(quota.requestRemaining >= 0)
+        XCTAssert(quota.resetTime > Date.now)
+    }
+
+    func testQuotaExceeded() async throws {
+        let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos"))
+        let stubSession = StubResponseAPIRequestSession(data: photosData, status: .tooManyRequests)
+        let provider = APIProvider(configuration: configuration, session: stubSession)
+        var request = try APIEndpoint.Photos.search(query: "nature")
+        let _ = try? await provider.request(&request)
+
+        XCTAssertNil(provider.quota)
+    }
 }
 
 // MARK: - Stub
@@ -88,14 +116,16 @@ final class PexelsTests: XCTestCase {
 private struct StubResponseAPIRequestSession: APIRequestSession {
     let data: Data
     let status: HTTPTypes.HTTPResponse.Status
+    let headerFields: HTTPTypes.HTTPFields
 
-    init(data: Data, status: HTTPTypes.HTTPResponse.Status = .ok) {
+    init(data: Data, status: HTTPTypes.HTTPResponse.Status = .ok, headerFields: HTTPTypes.HTTPFields = HTTPTypes.HTTPFields()) {
         self.data = data
         self.status = status
+        self.headerFields = headerFields
     }
 
     func data(for request: HTTPTypes.HTTPRequest) async throws -> (Data, HTTPTypes.HTTPResponse) {
-        return (data, HTTPTypes.HTTPResponse(status: status))
+        return (data, HTTPTypes.HTTPResponse(status: status, headerFields: headerFields))
     }
 }
 

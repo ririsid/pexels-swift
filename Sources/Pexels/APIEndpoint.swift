@@ -3,6 +3,7 @@ import Foundation
 /// A namespace for API endpoints.
 public enum APIEndpoint {
     public enum Photos {}
+    public enum Videos {}
 }
 
 // MARK: - APIEndpointError

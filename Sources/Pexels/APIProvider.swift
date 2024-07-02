@@ -36,8 +36,8 @@ public final class APIProvider {
     public func request<R: Decodable>(_ request: inout APIRequest<R>) async throws -> R {
         let (data, _) = try await makeRequest(&request)
         do {
-            let photos = try Self.jsonDecoder.decode(R.self, from: data)
-            return photos
+            let response = try Self.jsonDecoder.decode(R.self, from: data)
+            return response
         } catch {
             throw APIError.decodingError(localizedDescription: error.localizedDescription)
         }

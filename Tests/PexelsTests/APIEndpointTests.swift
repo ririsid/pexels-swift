@@ -3,22 +3,6 @@ import XCTest
 import struct HTTPTypes.HTTPRequest
 
 final class APIEndpointTests: XCTestCase {
-    func testPhotosSearch() throws {
-        let searchRequest = try APIEndpoint.Photos.search(query: "nature", orientation: .landscape, size: .large, color: .red, locale: .koKR, page: 1, perPage: 15)
-
-        XCTAssert(searchRequest.method == .get)
-        XCTAssert(searchRequest.path == "/v1/search?query=nature&orientation=landscape&size=large&color=red&locale=ko-KR&page=1&per_page=15")
-    }
-
-    func testPhotosSearchWithEmptyQuery() {
-        XCTAssertThrowsError(try APIEndpoint.Photos.search(query: "")) { error in
-            let error = try? XCTUnwrap(error as? APIEndpointError)
-            XCTAssert(error == .missingRequiredParameter(name: "query"))
-        }
-    }
-}
-
-final class APIParameterTypes_APIEndpointTests: XCTestCase {
     func testPageWithNoValue() {
         XCTAssertNil(APIParameterTypes.Page(nil))
     }

@@ -4,6 +4,7 @@ import struct HTTPTypes.HTTPRequest
 extension APIEndpoint.Photos {
     private enum Path: String {
         case search = "/v1/search"
+        case curated = "/v1/curated"
     }
     
     ///  This endpoint enables you to search Pexels for any topic that you would like. For example your query could be something broad like `Nature`, `Tigers`, `People`. Or it could be something specific like `Group of people working`.
@@ -24,7 +25,22 @@ extension APIEndpoint.Photos {
         }
         let page = APIParameterTypes.Page(page)
         let perPage = APIParameterTypes.PerPage(perPage)
-        let parameters = [(query as APIParameterable?), orientation, size, color, locale, page, perPage]
+        let parameters = Array<APIParameterable?>(arrayLiteral: query, orientation, size, color, locale, page, perPage)
         return APIRequest(method: .get, path: Path.search.rawValue, parameters: parameters)
+    }
+
+    /// This endpoint enables you to receive real-time photos curated by the Pexels team.
+    ///
+    /// We add at least one new photo per hour to our curated list so that you always get a changing selection of trending photos.
+    ///
+    /// - Parameters:
+    ///   - page: The page number you are requesting. `Default: 1`
+    ///   - perPage: The number of results you are requesting per page. `Default: 15` `Max: 80`
+    /// - Returns: A request to retrieve photos.
+    public static func curated(page: Int? = nil, perPage: Int? = nil) throws -> APIRequest<Photos> {
+        let page = APIParameterTypes.Page(page)
+        let perPage = APIParameterTypes.PerPage(perPage)
+        let parameters = Array<APIParameterable?>(arrayLiteral: page, perPage)
+        return APIRequest(method: .get, path: Path.curated.rawValue, parameters: parameters)
     }
 }

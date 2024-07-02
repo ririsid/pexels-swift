@@ -15,4 +15,11 @@ final class APIEndpointVideosTests: XCTestCase {
             XCTAssert(error == .missingRequiredParameter(name: "query"))
         }
     }
+
+    func testPopularVideos() throws {
+        let request = try APIEndpoint.Videos.popular(minWidth: 1024, minHeight: 1024, minDuration: 1, maxDuration: 60, page: 1, perPage: 15)
+
+        XCTAssert(request.method == .get)
+        XCTAssert(request.path == "/videos/popular?min_width=1024&min_height=1024&min_duration=1&max_duration=60&page=1&per_page=15")
+    }
 }

@@ -10,24 +10,17 @@ public enum APIParameterTypes {
         /// The corresponding value of the raw type.
         public let rawValue: RawValue
 
-        /// Creates a new instance with a query.
-        ///
-        /// - Parameter query: A query.
-        public init?(_ query: String) {
-            guard Self.isValid(query) else { return nil }
-            self.rawValue = query
-        }
-
         /// Creates a new instance with the specified raw value.
         ///
         /// - Parameter rawValue: A raw value.
         public init?(rawValue: RawValue) {
-            self.init(rawValue)
+            guard Self.isValid(rawValue) else { return nil }
+            self.rawValue = rawValue
         }
 
         /// Returns `true` if the value is valid.
         ///
-        /// - Parameter value: A value.
+        /// - Parameter value: The value.
         /// - Returns: `true` if the value is valid; otherwise, `false`.
         private static func isValid(_ value: RawValue) -> Bool {
             return !value.isEmpty
@@ -82,29 +75,22 @@ public enum APIParameterTypes {
         public static let gray = Color(named: .gray)
         public static let white = Color(named: .white)
 
-        /// Convert a hex color code to `Color`.
-        ///
-        /// - Parameter hexColorCode: A hexadecimal color code.
-        public static func hexColorCode(_ hexColorCode: String) -> Color? {
-            return Color(hexColorCode: hexColorCode)
-        }
-
         /// The corresponding value of the raw type.
         public let rawValue: RawValue
-
-        /// Creates a new instance with a value.
-        ///
-        /// - Parameter value: A value.
-        private init(value: String) {
-            self.rawValue = value
-        }
 
         /// Creates a new instance with the specified raw value.
         ///
         /// - Parameter rawValue: A raw value.
         public init?(rawValue: RawValue) {
             guard Self.isValid(rawValue) else { return nil }
-            self.init(value: rawValue)
+            self.rawValue = rawValue
+        }
+
+        /// Creates a new instance with a `Named` color.
+        ///
+        /// - Parameter named: A `Named` color.
+        private init(named: Named) {
+            self.rawValue = named.rawValue
         }
 
         /// Creates a new instance with a hex color code.
@@ -112,23 +98,22 @@ public enum APIParameterTypes {
         /// - Parameter hexColorCode: A hexadecimal color code.
         private init?(hexColorCode: String) {
             guard hexColorCode.isValidHexColorCode else { return nil }
-            self.init(value: hexColorCode)
+            self.init(rawValue: hexColorCode)
         }
 
-        /// Creates a new instance with a `Named` color.
+        /// Convert a hex color code to `Color`.
         ///
-        /// - Parameter named: A `Named` color.
-        private init(named: Named) {
-            self.init(value: named.rawValue)
+        /// - Parameter hexColorCode: A hexadecimal color code.
+        public static func hexColorCode(_ hexColorCode: String) -> Color? {
+            return Color(hexColorCode: hexColorCode)
         }
 
         /// Returns `true` if the value is valid.
         ///
-        /// - Parameter value: A value.
+        /// - Parameter value: The value.
         /// - Returns: `true` if the value is valid; otherwise, `false`.
         private static func isValid(_ value: RawValue) -> Bool {
-            return Named.contains(value)
-            || value.isValidHexColorCode
+            return Named.contains(value) || value.isValidHexColorCode
         }
     }
 
@@ -175,24 +160,17 @@ public enum APIParameterTypes {
         /// The corresponding value of the raw type.
         public let rawValue: RawValue
 
-        /// Creates a new instance with a page number.
-        ///
-        /// - Parameter page: A page number.
-        public init?(_ page: Int) {
-            guard Self.isValid(page) else { return nil }
-            self.rawValue = page
-        }
-
         /// Creates a new instance with the specified raw value.
         ///
         /// - Parameter rawValue: A raw value.
         public init?(rawValue: RawValue) {
-            self.init(rawValue)
+            guard Self.isValid(rawValue) else { return nil }
+            self.rawValue = rawValue
         }
 
         /// Returns `true` if the value is valid.
         ///
-        /// - Parameter value: A value.
+        /// - Parameter value: The value.
         /// - Returns: `true` if the value is valid; otherwise, `false`.
         private static func isValid(_ value: RawValue) -> Bool {
             return value >= Self.default
@@ -215,48 +193,122 @@ public enum APIParameterTypes {
 
         /// The corresponding value of the raw type.
         public let rawValue: RawValue
-        public let name: String = "per_page"
 
-        /// Creates a new instance with a per page number.
-        ///
-        /// - Parameter perPage: A per page number.
-        public init?(_ perPage: Int) {
-            guard Self.isValid(perPage) else { return nil }
-            self.rawValue = perPage
-        }
+        public let name: String = "per_page"
 
         /// Creates a new instance with the specified raw value.
         public init?(rawValue: RawValue) {
-            self.init(rawValue)
+            guard Self.isValid(rawValue) else { return nil }
+            self.rawValue = rawValue
         }
 
         /// Returns `true` if the value is valid.
         ///
-        /// - Parameter value: A value.
+        /// - Parameter value: The value.
         /// - Returns: `true` if the value is valid; otherwise, `false`.
         private static func isValid(_ value: RawValue) -> Bool {
             return Self.min...Self.max ~= value
         }
     }
-}
 
-extension APIParameterTypes.Page {
-    /// Creates a new instance with a page number. (for `Optional` value)
-    ///
-    /// - Parameter page: A page number.
-    init?(_ page: Int?) {
-        guard let page else { return nil }
-        self.init(page)
+    /// The minimum width in pixels of the returned videos.
+    public struct MinWidth: RawRepresentable, APIParameterable {
+        /// The raw type that can be used to represent all values of the conforming type.
+        public typealias RawValue = Int
+
+        /// The corresponding value of the raw type.
+        public let rawValue: RawValue
+
+        public let name: String = "min_width"
+
+        /// Creates a new instance with the specified raw value.
+        public init?(rawValue: RawValue) {
+            guard Self.isValid(rawValue) else { return nil }
+            self.rawValue = rawValue
+        }
+
+        /// Returns `true` if the value is valid.
+        ///
+        /// - Parameter value: The value.
+        /// - Returns: `true` if the value is valid; otherwise, `false`.
+        private static func isValid(_ value: RawValue) -> Bool {
+            return value >= 0
+        }
     }
-}
 
-extension APIParameterTypes.PerPage {
-    /// Creates a new instance with a per page number. (for `Optional` value)
-    ///
-    /// - Parameter perPage: A per page number.
-    init?(_ perPage: Int?) {
-        guard let perPage else { return nil }
-        self.init(perPage)
+    /// The minimum height in pixels of the returned videos.
+    public struct MinHeight: RawRepresentable, APIParameterable {
+        /// The raw type that can be used to represent all values of the conforming type.
+        public typealias RawValue = Int
+
+        /// The corresponding value of the raw type.
+        public let rawValue: RawValue
+
+        public let name: String = "min_height"
+
+        /// Creates a new instance with the specified raw value.
+        public init?(rawValue: RawValue) {
+            guard Self.isValid(rawValue) else { return nil }
+            self.rawValue = rawValue
+        }
+
+        /// Returns `true` if the value is valid.
+        ///
+        /// - Parameter value: The value.
+        /// - Returns: `true` if the value is valid; otherwise, `false`.
+        private static func isValid(_ value: RawValue) -> Bool {
+            return value >= 0
+        }
+    }
+
+    /// The minimum duration in seconds of the returned videos.
+    public struct MinDuration: APIParameterable, RawRepresentable {
+        /// The raw type that can be used to represent all values of the conforming type.
+        public typealias RawValue = Int
+
+        /// The corresponding value of the raw type.
+        public let rawValue: RawValue
+
+        public let name: String = "min_duration"
+
+        /// Creates a new instance with the specified raw value.
+        public init?(rawValue: RawValue) {
+            guard Self.isValid(rawValue) else { return nil }
+            self.rawValue = rawValue
+        }
+
+        /// Returns `true` if the value is valid.
+        ///
+        /// - Parameter value: The value.
+        /// - Returns: `true` if the value is valid; otherwise, `false`.
+        private static func isValid(_ value: RawValue) -> Bool {
+            return value >= 0
+        }
+    }
+
+    /// The maximum duration in seconds of the returned videos.
+    public struct MaxDuration: APIParameterable, RawRepresentable {
+        /// The raw type that can be used to represent all values of the conforming type.
+        public typealias RawValue = Int
+
+        /// The corresponding value of the raw type.
+        public let rawValue: RawValue
+
+        public let name: String = "max_duration"
+
+        /// Creates a new instance with the specified raw value.
+        public init?(rawValue: RawValue) {
+            guard Self.isValid(rawValue) else { return nil }
+            self.rawValue = rawValue
+        }
+
+        /// Returns `true` if the value is valid.
+        ///
+        /// - Parameter value: The value.
+        /// - Returns: `true` if the value is valid; otherwise, `false`.
+        private static func isValid(_ value: RawValue) -> Bool {
+            return value >= 0
+        }
     }
 }
 
@@ -275,6 +327,49 @@ extension APIParameterable {
     // Nested types of `APIParameterTypes` use lowercased type names.
     public var name: String {
         String(describing: type(of: self)).lowercased()
+    }
+}
+
+extension APIParameterable where Self: RawRepresentable<String> {
+    public var value: String? {
+        rawValue
+    }
+
+    /// Creates a new instance with a value.
+    ///
+    /// - Parameter value: A value.
+    public init?(_ value: Self.RawValue) {
+        guard Self.isValid(value) else { return nil }
+        self.init(rawValue: value)
+    }
+
+    /// Returns `true` if the value is valid.
+    ///
+    /// - Parameter value: The value.
+    /// - Returns: `true` if the value is valid; otherwise, `false`.
+    internal static func isValid(_ value: Self.RawValue) -> Bool {
+        return !value.isEmpty
+    }
+}
+
+extension APIParameterable where Self: RawRepresentable<Int> {
+    public var value: String? {
+        String(rawValue)
+    }
+
+    /// Creates a new instance with a value.
+    ///
+    /// - Parameter value: A value.
+    public init?(_ value: Self.RawValue) {
+        self.init(rawValue: value)
+    }
+
+    /// Creates a new instance with a value.
+    ///
+    /// - Parameter value: A value.
+    public init?(_ value: Self.RawValue?) {
+        guard let value else { return nil }
+        self.init(rawValue: value)
     }
 }
 

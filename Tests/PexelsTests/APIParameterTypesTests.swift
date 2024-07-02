@@ -2,36 +2,23 @@ import XCTest
 @testable import Pexels
 
 final class APIParameterTypesTests: XCTestCase {
-    func testAPIParameterable() {
-        let rawRepresentableWithString = APIParameterTypes.Orientation.landscape
-        let rawRepresentableWithInt = APIParameterTypes.Page(1)
-
-        XCTAssert(rawRepresentableWithString.name == "orientation")
-        XCTAssert(rawRepresentableWithString.value == "landscape")
-        XCTAssertNotNil(rawRepresentableWithInt)
-        XCTAssert(rawRepresentableWithInt!.name == "page")
-        XCTAssert(rawRepresentableWithInt!.value == "1")
-    }
-
     func testQuery() {
         let queryNature = APIParameterTypes.Query("nature")
+        let queryWithEmptyValue = APIParameterTypes.Query("")
 
         XCTAssertNotNil(queryNature)
         XCTAssert(queryNature!.name == "query")
         XCTAssert(queryNature!.value == "nature")
+        XCTAssertNil(queryWithEmptyValue)
     }
 
     func testQueryWithRawValue() {
-        let queryPeople = APIParameterTypes.Query(rawValue: "people")
+        let queryNature = APIParameterTypes.Query(rawValue: "nature")
+        let queryWithEmptyValue = APIParameterTypes.Query(rawValue: "")
 
-        XCTAssertNotNil(queryPeople)
-        XCTAssert(queryPeople!.name == "query")
-        XCTAssert(queryPeople!.value == "people")
-    }
-
-    func testQueryWithEmptyValue() {
-        let queryWithEmptyValue = APIParameterTypes.Query("")
-
+        XCTAssertNotNil(queryNature)
+        XCTAssert(queryNature!.name == "query")
+        XCTAssert(queryNature!.value == "nature")
         XCTAssertNil(queryWithEmptyValue)
     }
 
@@ -62,6 +49,7 @@ final class APIParameterTypesTests: XCTestCase {
         let colorHexColorCodeNoHashSymbol = APIParameterTypes.Color.hexColorCode("ffffff")
         let colorHexColorCodeIsLong = APIParameterTypes.Color.hexColorCode("#fffffff")
         let colorHexColorCodeIsShort = APIParameterTypes.Color.hexColorCode("#ff")
+        let colorWithEmptyHexColorCode = APIParameterTypes.Color.hexColorCode("")
 
         XCTAssertNotNil(colorHexColorCode_ffffff)
         XCTAssert(colorHexColorCode_ffffff!.name == "color")
@@ -72,6 +60,7 @@ final class APIParameterTypesTests: XCTestCase {
         XCTAssertNil(colorHexColorCodeNoHashSymbol)
         XCTAssertNil(colorHexColorCodeIsLong)
         XCTAssertNil(colorHexColorCodeIsShort)
+        XCTAssertNil(colorWithEmptyHexColorCode)
     }
 
     func testColorWithRawValue() {
@@ -88,12 +77,6 @@ final class APIParameterTypesTests: XCTestCase {
         XCTAssert(colorWithValidHexColorCode!.name == "color")
         XCTAssert(colorWithValidHexColorCode!.value == "#000000")
         XCTAssertNil(colorWithInvalidHexColorCode)
-    }
-
-    func testColorWithEmptyHexColorCode() {
-        let colorWithEmptyHexColorCode = APIParameterTypes.Color.hexColorCode("")
-
-        XCTAssertNil(colorWithEmptyHexColorCode)
     }
 
     func testLocale() {
@@ -116,11 +99,13 @@ final class APIParameterTypesTests: XCTestCase {
 
     func testPageWithRawValue() {
         let page2 = APIParameterTypes.Page(rawValue: 2)
+        let pageUnderMin = APIParameterTypes.Page(rawValue: 0)
 
         XCTAssertNotNil(page2)
         XCTAssert(page2!.name == "page")
         XCTAssert(page2!.value == "2")
         XCTAssert(page2!.rawValue == 2)
+        XCTAssertNil(pageUnderMin)
     }
 
     func testPerPage() {
@@ -138,10 +123,100 @@ final class APIParameterTypesTests: XCTestCase {
 
     func testPerPageWithRawValue() {
         let perPage1 = APIParameterTypes.PerPage(rawValue: 1)
+        let perPageUnderMin = APIParameterTypes.PerPage(rawValue: 0) // Min: 1
 
         XCTAssertNotNil(perPage1)
         XCTAssert(perPage1!.name == "per_page")
         XCTAssert(perPage1!.value == "1")
         XCTAssert(perPage1!.rawValue == 1)
+        XCTAssertNil(perPageUnderMin)
+    }
+
+    func testMinWidth() {
+        let minWidth1024 = APIParameterTypes.MinWidth(1024)
+        let minWidthNegative = APIParameterTypes.MinWidth(-1)
+
+        XCTAssertNotNil(minWidth1024)
+        XCTAssert(minWidth1024!.name == "min_width")
+        XCTAssert(minWidth1024!.value == "1024")
+        XCTAssert(minWidth1024!.rawValue == 1024)
+        XCTAssertNil(minWidthNegative)
+    }
+
+    func testMinWidthWithRawValue() {
+        let minWidth1024 = APIParameterTypes.MinWidth(rawValue: 1024)
+        let minWidthNegative = APIParameterTypes.MinWidth(rawValue: -1)
+
+        XCTAssertNotNil(minWidth1024)
+        XCTAssert(minWidth1024!.name == "min_width")
+        XCTAssert(minWidth1024!.value == "1024")
+        XCTAssert(minWidth1024!.rawValue == 1024)
+        XCTAssertNil(minWidthNegative)
+    }
+
+    func testMinHeight() {
+        let minHeight1024 = APIParameterTypes.MinHeight(1024)
+        let minHeightNegative = APIParameterTypes.MinHeight(-1)
+
+        XCTAssertNotNil(minHeight1024)
+        XCTAssert(minHeight1024!.name == "min_height")
+        XCTAssert(minHeight1024!.value == "1024")
+        XCTAssert(minHeight1024!.rawValue == 1024)
+        XCTAssertNil(minHeightNegative)
+    }
+
+    func testMinHeightWithRawValue() {
+        let minHeight1024 = APIParameterTypes.MinHeight(rawValue: 1024)
+        let minHeightNegative = APIParameterTypes.MinHeight(rawValue: -1)
+
+        XCTAssertNotNil(minHeight1024)
+        XCTAssert(minHeight1024!.name == "min_height")
+        XCTAssert(minHeight1024!.value == "1024")
+        XCTAssert(minHeight1024!.rawValue == 1024)
+        XCTAssertNil(minHeightNegative)
+    }
+
+    func testMinDuration() {
+        let minDuration1 = APIParameterTypes.MinDuration(1)
+        let minDurationNegative = APIParameterTypes.MinDuration(-1)
+
+        XCTAssertNotNil(minDuration1)
+        XCTAssert(minDuration1!.name == "min_duration")
+        XCTAssert(minDuration1!.value == "1")
+        XCTAssert(minDuration1!.rawValue == 1)
+        XCTAssertNil(minDurationNegative)
+    }
+
+    func testMinDurationWithRawValue() {
+        let minDuration1 = APIParameterTypes.MinDuration(rawValue: 1)
+        let minDurationNegative = APIParameterTypes.MinDuration(rawValue: -1)
+
+        XCTAssertNotNil(minDuration1)
+        XCTAssert(minDuration1!.name == "min_duration")
+        XCTAssert(minDuration1!.value == "1")
+        XCTAssert(minDuration1!.rawValue == 1)
+        XCTAssertNil(minDurationNegative)
+    }
+
+    func testMaxDuration() {
+        let maxDuration60 = APIParameterTypes.MaxDuration(60)
+        let maxDurationNegative = APIParameterTypes.MaxDuration(-1)
+
+        XCTAssertNotNil(maxDuration60)
+        XCTAssert(maxDuration60!.name == "max_duration")
+        XCTAssert(maxDuration60!.value == "60")
+        XCTAssert(maxDuration60!.rawValue == 60)
+        XCTAssertNil(maxDurationNegative)
+    }
+
+    func testMaxDurationWithRawValue() {
+        let maxDuration60 = APIParameterTypes.MaxDuration(rawValue: 60)
+        let maxDurationNegative = APIParameterTypes.MaxDuration(rawValue: -1)
+
+        XCTAssertNotNil(maxDuration60)
+        XCTAssert(maxDuration60!.name == "max_duration")
+        XCTAssert(maxDuration60!.value == "60")
+        XCTAssert(maxDuration60!.rawValue == 60)
+        XCTAssertNil(maxDurationNegative)
     }
 }

@@ -4,6 +4,7 @@ import struct HTTPTypes.HTTPRequest
 extension APIEndpoint.Videos {
     private enum Path: String {
         case search = "/videos/search"
+        case popular = "/videos/popular"
     }
 
     /// This endpoint enables you to search Pexels for any topic that you would like. For example your query could be something broad like `Nature`, `Tigers`, `People`. Or it could be something specific like `Group of people working`.
@@ -25,5 +26,26 @@ extension APIEndpoint.Videos {
         let perPage = APIParameterTypes.PerPage(perPage)
         let parameters = Array<APIParameterable?>(arrayLiteral: query, orientation, size, locale, page, perPage)
         return APIRequest(method: .get, path: Path.search.rawValue, parameters: parameters)
+    }
+
+    /// This endpoint enables you to receive the current popular Pexels videos.
+    ///
+    /// - Parameters:
+    ///   - minWidth: The minimum width in pixels of the returned videos.
+    ///   - minHeight: The minimum height in pixels of the returned videos.
+    ///   - minDuration: The minimum duration in seconds of the returned videos.
+    ///   - maxDuration: The maximum duration in seconds of the returned videos.
+    ///   - page: The page number you are requesting. `Default: 1`
+    ///   - perPage: The number of results you are requesting per page. `Default: 15` `Max: 80`
+    /// - Returns: A request to retrieve photos.
+    public static func popular(minWidth: Int? = nil, minHeight: Int? = nil, minDuration: Int? = nil, maxDuration: Int? = nil, page: Int? = nil, perPage: Int? = nil) throws -> APIRequest<Videos> {
+        let minWidth = APIParameterTypes.MinWidth(minWidth)
+        let minHeight = APIParameterTypes.MinHeight(minHeight)
+        let minDuration = APIParameterTypes.MinDuration(minDuration)
+        let maxDuration = APIParameterTypes.MaxDuration(maxDuration)
+        let page = APIParameterTypes.Page(page)
+        let perPage = APIParameterTypes.PerPage(perPage)
+        let parameters = Array<APIParameterable?>(arrayLiteral: minWidth, minHeight, minDuration, maxDuration, page, perPage)
+        return APIRequest(method: .get, path: Path.popular.rawValue, parameters: parameters)
     }
 }

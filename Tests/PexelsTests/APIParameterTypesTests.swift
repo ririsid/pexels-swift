@@ -7,8 +7,8 @@ final class APIParameterTypesTests: XCTestCase {
         let queryWithEmptyValue = APIParameterTypes.Query("")
 
         XCTAssertNotNil(queryNature)
-        XCTAssert(queryNature!.name == "query")
-        XCTAssert(queryNature!.value == "nature")
+        XCTAssertEqual(queryNature!.name, "query")
+        XCTAssertEqual(queryNature!.value, "nature")
         XCTAssertNil(queryWithEmptyValue)
     }
 
@@ -17,30 +17,30 @@ final class APIParameterTypesTests: XCTestCase {
         let queryWithEmptyValue = APIParameterTypes.Query(rawValue: "")
 
         XCTAssertNotNil(queryNature)
-        XCTAssert(queryNature!.name == "query")
-        XCTAssert(queryNature!.value == "nature")
+        XCTAssertEqual(queryNature!.name, "query")
+        XCTAssertEqual(queryNature!.value, "nature")
         XCTAssertNil(queryWithEmptyValue)
     }
 
     func testOrientation() {
         let orientationLandscape = APIParameterTypes.Orientation.landscape
 
-        XCTAssert(orientationLandscape.name == "orientation")
-        XCTAssert(orientationLandscape.value == "landscape")
+        XCTAssertEqual(orientationLandscape.name, "orientation")
+        XCTAssertEqual(orientationLandscape.value, "landscape")
     }
 
     func testSize() {
         let sizeLarge = APIParameterTypes.Size.large
 
-        XCTAssert(sizeLarge.name == "size")
-        XCTAssert(sizeLarge.value == "large")
+        XCTAssertEqual(sizeLarge.name, "size")
+        XCTAssertEqual(sizeLarge.value, "large")
     }
 
     func testColor() {
         let colorRed = APIParameterTypes.Color.red
 
-        XCTAssert(colorRed.name == "color")
-        XCTAssert(colorRed.value == "red")
+        XCTAssertEqual(colorRed.name, "color")
+        XCTAssertEqual(colorRed.value, "red")
     }
 
     func testColorWithHexColorCode() {
@@ -52,11 +52,11 @@ final class APIParameterTypesTests: XCTestCase {
         let colorWithEmptyHexColorCode = APIParameterTypes.Color.hexColorCode("")
 
         XCTAssertNotNil(colorHexColorCode_ffffff)
-        XCTAssert(colorHexColorCode_ffffff!.name == "color")
-        XCTAssert(colorHexColorCode_ffffff!.value == "#ffffff")
+        XCTAssertEqual(colorHexColorCode_ffffff!.name, "color")
+        XCTAssertEqual(colorHexColorCode_ffffff!.value, "#ffffff")
         XCTAssertNotNil(colorHexColorCode_fff)
-        XCTAssert(colorHexColorCode_fff!.name == "color")
-        XCTAssert(colorHexColorCode_fff!.value == "#fff")
+        XCTAssertEqual(colorHexColorCode_fff!.name, "color")
+        XCTAssertEqual(colorHexColorCode_fff!.value, "#fff")
         XCTAssertNil(colorHexColorCodeNoHashSymbol)
         XCTAssertNil(colorHexColorCodeIsLong)
         XCTAssertNil(colorHexColorCodeIsShort)
@@ -70,20 +70,20 @@ final class APIParameterTypesTests: XCTestCase {
         let colorWithInvalidHexColorCode = APIParameterTypes.Color(rawValue: "000000")
 
         XCTAssertNotNil(colorWithSupportedColorName)
-        XCTAssert(colorWithSupportedColorName!.name == "color")
-        XCTAssert(colorWithSupportedColorName!.value == "red")
+        XCTAssertEqual(colorWithSupportedColorName!.name, "color")
+        XCTAssertEqual(colorWithSupportedColorName!.value, "red")
         XCTAssertNil(colorWithUnsupportedColorName)
         XCTAssertNotNil(colorWithValidHexColorCode)
-        XCTAssert(colorWithValidHexColorCode!.name == "color")
-        XCTAssert(colorWithValidHexColorCode!.value == "#000000")
+        XCTAssertEqual(colorWithValidHexColorCode!.name, "color")
+        XCTAssertEqual(colorWithValidHexColorCode!.value, "#000000")
         XCTAssertNil(colorWithInvalidHexColorCode)
     }
 
     func testLocale() {
         let localeKoKR = APIParameterTypes.Locale.koKR
 
-        XCTAssert(localeKoKR.name == "locale")
-        XCTAssert(localeKoKR.value == "ko-KR")
+        XCTAssertEqual(localeKoKR.name, "locale")
+        XCTAssertEqual(localeKoKR.value, "ko-KR")
     }
 
     func testPage() {
@@ -91,9 +91,9 @@ final class APIParameterTypesTests: XCTestCase {
         let pageUnderMin = APIParameterTypes.Page(0) // Min: 1
 
         XCTAssertNotNil(page1)
-        XCTAssert(page1!.name == "page")
-        XCTAssert(page1!.value == "1")
-        XCTAssert(page1!.rawValue == 1)
+        XCTAssertEqual(page1!.name, "page")
+        XCTAssertEqual(page1!.value, "1")
+        XCTAssertEqual(page1!.rawValue, 1)
         XCTAssertNil(pageUnderMin)
     }
 
@@ -102,9 +102,9 @@ final class APIParameterTypesTests: XCTestCase {
         let pageUnderMin = APIParameterTypes.Page(rawValue: 0)
 
         XCTAssertNotNil(page2)
-        XCTAssert(page2!.name == "page")
-        XCTAssert(page2!.value == "2")
-        XCTAssert(page2!.rawValue == 2)
+        XCTAssertEqual(page2!.name, "page")
+        XCTAssertEqual(page2!.value, "2")
+        XCTAssertEqual(page2!.rawValue, 2)
         XCTAssertNil(pageUnderMin)
     }
 
@@ -114,9 +114,9 @@ final class APIParameterTypesTests: XCTestCase {
         let perPageOverMax = APIParameterTypes.PerPage(100) // Max: 80
 
         XCTAssertNotNil(perPage50)
-        XCTAssert(perPage50!.name == "per_page")
-        XCTAssert(perPage50!.value == "50")
-        XCTAssert(perPage50!.rawValue == 50)
+        XCTAssertEqual(perPage50!.name, "per_page")
+        XCTAssertEqual(perPage50!.value, "50")
+        XCTAssertEqual(perPage50!.rawValue, 50)
         XCTAssertNil(perPageUnderMin)
         XCTAssertNil(perPageOverMax)
     }
@@ -126,9 +126,9 @@ final class APIParameterTypesTests: XCTestCase {
         let perPageUnderMin = APIParameterTypes.PerPage(rawValue: 0) // Min: 1
 
         XCTAssertNotNil(perPage1)
-        XCTAssert(perPage1!.name == "per_page")
-        XCTAssert(perPage1!.value == "1")
-        XCTAssert(perPage1!.rawValue == 1)
+        XCTAssertEqual(perPage1!.name, "per_page")
+        XCTAssertEqual(perPage1!.value, "1")
+        XCTAssertEqual(perPage1!.rawValue, 1)
         XCTAssertNil(perPageUnderMin)
     }
 
@@ -137,9 +137,9 @@ final class APIParameterTypesTests: XCTestCase {
         let minWidthNegative = APIParameterTypes.MinWidth(-1)
 
         XCTAssertNotNil(minWidth1024)
-        XCTAssert(minWidth1024!.name == "min_width")
-        XCTAssert(minWidth1024!.value == "1024")
-        XCTAssert(minWidth1024!.rawValue == 1024)
+        XCTAssertEqual(minWidth1024!.name, "min_width")
+        XCTAssertEqual(minWidth1024!.value, "1024")
+        XCTAssertEqual(minWidth1024!.rawValue, 1024)
         XCTAssertNil(minWidthNegative)
     }
 
@@ -148,9 +148,9 @@ final class APIParameterTypesTests: XCTestCase {
         let minWidthNegative = APIParameterTypes.MinWidth(rawValue: -1)
 
         XCTAssertNotNil(minWidth1024)
-        XCTAssert(minWidth1024!.name == "min_width")
-        XCTAssert(minWidth1024!.value == "1024")
-        XCTAssert(minWidth1024!.rawValue == 1024)
+        XCTAssertEqual(minWidth1024!.name, "min_width")
+        XCTAssertEqual(minWidth1024!.value, "1024")
+        XCTAssertEqual(minWidth1024!.rawValue, 1024)
         XCTAssertNil(minWidthNegative)
     }
 
@@ -159,9 +159,9 @@ final class APIParameterTypesTests: XCTestCase {
         let minHeightNegative = APIParameterTypes.MinHeight(-1)
 
         XCTAssertNotNil(minHeight1024)
-        XCTAssert(minHeight1024!.name == "min_height")
-        XCTAssert(minHeight1024!.value == "1024")
-        XCTAssert(minHeight1024!.rawValue == 1024)
+        XCTAssertEqual(minHeight1024!.name, "min_height")
+        XCTAssertEqual(minHeight1024!.value, "1024")
+        XCTAssertEqual(minHeight1024!.rawValue, 1024)
         XCTAssertNil(minHeightNegative)
     }
 
@@ -170,9 +170,9 @@ final class APIParameterTypesTests: XCTestCase {
         let minHeightNegative = APIParameterTypes.MinHeight(rawValue: -1)
 
         XCTAssertNotNil(minHeight1024)
-        XCTAssert(minHeight1024!.name == "min_height")
-        XCTAssert(minHeight1024!.value == "1024")
-        XCTAssert(minHeight1024!.rawValue == 1024)
+        XCTAssertEqual(minHeight1024!.name, "min_height")
+        XCTAssertEqual(minHeight1024!.value, "1024")
+        XCTAssertEqual(minHeight1024!.rawValue, 1024)
         XCTAssertNil(minHeightNegative)
     }
 
@@ -181,9 +181,9 @@ final class APIParameterTypesTests: XCTestCase {
         let minDurationNegative = APIParameterTypes.MinDuration(-1)
 
         XCTAssertNotNil(minDuration1)
-        XCTAssert(minDuration1!.name == "min_duration")
-        XCTAssert(minDuration1!.value == "1")
-        XCTAssert(minDuration1!.rawValue == 1)
+        XCTAssertEqual(minDuration1!.name, "min_duration")
+        XCTAssertEqual(minDuration1!.value, "1")
+        XCTAssertEqual(minDuration1!.rawValue, 1)
         XCTAssertNil(minDurationNegative)
     }
 
@@ -192,9 +192,9 @@ final class APIParameterTypesTests: XCTestCase {
         let minDurationNegative = APIParameterTypes.MinDuration(rawValue: -1)
 
         XCTAssertNotNil(minDuration1)
-        XCTAssert(minDuration1!.name == "min_duration")
-        XCTAssert(minDuration1!.value == "1")
-        XCTAssert(minDuration1!.rawValue == 1)
+        XCTAssertEqual(minDuration1!.name, "min_duration")
+        XCTAssertEqual(minDuration1!.value, "1")
+        XCTAssertEqual(minDuration1!.rawValue, 1)
         XCTAssertNil(minDurationNegative)
     }
 
@@ -203,9 +203,9 @@ final class APIParameterTypesTests: XCTestCase {
         let maxDurationNegative = APIParameterTypes.MaxDuration(-1)
 
         XCTAssertNotNil(maxDuration60)
-        XCTAssert(maxDuration60!.name == "max_duration")
-        XCTAssert(maxDuration60!.value == "60")
-        XCTAssert(maxDuration60!.rawValue == 60)
+        XCTAssertEqual(maxDuration60!.name, "max_duration")
+        XCTAssertEqual(maxDuration60!.value, "60")
+        XCTAssertEqual(maxDuration60!.rawValue, 60)
         XCTAssertNil(maxDurationNegative)
     }
 
@@ -214,9 +214,9 @@ final class APIParameterTypesTests: XCTestCase {
         let maxDurationNegative = APIParameterTypes.MaxDuration(rawValue: -1)
 
         XCTAssertNotNil(maxDuration60)
-        XCTAssert(maxDuration60!.name == "max_duration")
-        XCTAssert(maxDuration60!.value == "60")
-        XCTAssert(maxDuration60!.rawValue == 60)
+        XCTAssertEqual(maxDuration60!.name, "max_duration")
+        XCTAssertEqual(maxDuration60!.value, "60")
+        XCTAssertEqual(maxDuration60!.rawValue, 60)
         XCTAssertNil(maxDurationNegative)
     }
 }

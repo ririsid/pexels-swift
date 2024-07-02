@@ -21,13 +21,13 @@ public struct Video: Decodable, Identifiable, Equatable {
     public let duration: Int
 
     /// The videographer who shot the video.
-    public let videographer: Videographer
+    public let videographer: Self.Videographer
 
     /// An array of different sized versions of the video.
-    public let videoFiles: [VideoFile]
+    public let videoFiles: [Self.VideoFile]
 
     /// An array of preview pictures of the video.
-    public let videoPictures: [VideoPicture]
+    public let videoPictures: [Self.VideoPicture]
 
     enum CodingKeys: String, CodingKey {
         case id

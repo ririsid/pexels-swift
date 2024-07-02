@@ -2,10 +2,12 @@ import Foundation
 import struct HTTPTypes.HTTPRequest
 
 extension APIEndpoint.Videos {
-    private enum Path: String {
-        case search = "/videos/search"
-        case popular = "/videos/popular"
-        case video = "/videos/videos"
+    private enum Path {
+        static let search: String = "/videos/search"
+        static let popular: String = "/videos/popular"
+        static func video(id: Int) -> String {
+            return "/videos/videos/\(id)"
+        }
     }
 
     /// This endpoint enables you to search Pexels for any topic that you would like. For example your query could be something broad like `Nature`, `Tigers`, `People`. Or it could be something specific like `Group of people working`.
@@ -26,7 +28,7 @@ extension APIEndpoint.Videos {
         let page = APIParameterTypes.Page(page)
         let perPage = APIParameterTypes.PerPage(perPage)
         let parameters = Array<APIParameterable?>(arrayLiteral: query, orientation, size, locale, page, perPage)
-        return APIRequest(method: .get, path: Path.search.rawValue, parameters: parameters)
+        return APIRequest(method: .get, path: Path.search, parameters: parameters)
     }
 
     /// This endpoint enables you to receive the current popular Pexels videos.
@@ -47,7 +49,7 @@ extension APIEndpoint.Videos {
         let page = APIParameterTypes.Page(page)
         let perPage = APIParameterTypes.PerPage(perPage)
         let parameters = Array<APIParameterable?>(arrayLiteral: minWidth, minHeight, minDuration, maxDuration, page, perPage)
-        return APIRequest(method: .get, path: Path.popular.rawValue, parameters: parameters)
+        return APIRequest(method: .get, path: Path.popular, parameters: parameters)
     }
 
     /// Retrieve a specific `Video` from its id.
@@ -56,7 +58,6 @@ extension APIEndpoint.Videos {
     ///   - id: The id of the video you are requesting.
     /// - Returns: A request to retrieve video.
     public static func video(id: Int) throws -> APIRequest<Video> {
-        let path = Path.video.rawValue + "/\(id)"
-        return APIRequest(method: .get, path: path)
+        return APIRequest(method: .get, path: Path.video(id: id))
     }
 }

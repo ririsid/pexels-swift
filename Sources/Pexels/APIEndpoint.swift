@@ -4,6 +4,7 @@ import Foundation
 public enum APIEndpoint {
     public enum Photos {}
     public enum Videos {}
+    public enum Collections {}
 }
 
 // MARK: - APIEndpointError

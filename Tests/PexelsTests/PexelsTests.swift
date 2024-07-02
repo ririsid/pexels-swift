@@ -1,6 +1,5 @@
 import XCTest
 @testable import Pexels
-import HTTPTypes
 
 final class PexelsTests: XCTestCase {
     var apiKey: String!

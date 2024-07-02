@@ -310,6 +310,20 @@ public enum APIParameterTypes {
             return value >= 0
         }
     }
+
+    /// The type of media you are requesting. If not given or if given with an invalid value, all media will be returned. Supported values are `photos` and `videos`.
+    public enum MediaType: String, APIParameterable {
+        case photos
+        case videos
+
+        public var name: String { "type" }
+    }
+
+    /// The order of items in the media collection. Supported values are: `asc`, `desc`. `Default: asc`
+    public enum Sort: String, APIParameterable {
+        case ascending = "asc"
+        case descending = "desc"
+    }
 }
 
 // MARK: - APIParameterable

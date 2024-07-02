@@ -15,7 +15,7 @@ public struct Photo: Decodable, Identifiable, Equatable {
     public let url: URL
 
     /// The photographer who took the photo.
-    public let photographer: Photographer
+    public let photographer: Self.Photographer
 
     /// The average color of the photo. Useful for a placeholder while the image loads.
     ///
@@ -23,7 +23,7 @@ public struct Photo: Decodable, Identifiable, Equatable {
     public let averageColor: String
 
     /// An assortment of different image sizes that can be used to display this `Photo`.
-    public let source: Source
+    public let source: Self.Source
 
     /// Indicates whether you liked.
     public let liked: Bool
@@ -40,7 +40,7 @@ public struct Photo: Decodable, Identifiable, Equatable {
         self.url = try container.decode(URL.self, forKey: .url)
         self.photographer = try Photographer(from: decoder)
         self.averageColor = try container.decode(String.self, forKey: .averageColor)
-        self.source = try container.decode(Photo.Source.self, forKey: .source)
+        self.source = try container.decode(Self.Source.self, forKey: .source)
         self.liked = try container.decode(Bool.self, forKey: .liked)
         self.alternativeText = try container.decode(String.self, forKey: .alternativeText)
     }

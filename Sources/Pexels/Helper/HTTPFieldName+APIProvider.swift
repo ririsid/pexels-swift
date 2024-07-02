@@ -1,6 +1,6 @@
-import HTTPTypes
+import struct HTTPTypes.HTTPField
 
-extension HTTPField.Name {
+extension HTTPTypes.HTTPField.Name {
     /// Your total request limit for the monthly period.
     static let xRatelimitLimit = Self("X-Ratelimit-Limit")!
 

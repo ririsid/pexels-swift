@@ -22,7 +22,7 @@ public struct APIConfiguration: APIConfigurable {
 // MARK: - APIConfigurable
 
 /// API configuration protocol.
-public protocol APIConfigurable {
+public protocol APIConfigurable: Sendable {
     var apiKey: String { get }
     var scheme: String? { get }
     var authority: String? { get }

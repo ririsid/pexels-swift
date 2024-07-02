@@ -4,19 +4,14 @@ import Foundation
 public struct Photos: Decodable, Equatable, Pageable {
     /// An array of `Photo` objects.
     public let photos: [Photo]
-    
-    /// The current page number.
+
     public let page: Int
-    
-    /// The number of results returned with each page.
     public let perPage: Int
-    
-    /// The total number of results for the request.
     public let totalResults: Int
-    
-    let previousPageURL: URL?
-    let nextPageURL: URL?
-    
+
+    internal let previousPageURL: URL?
+    internal let nextPageURL: URL?
+
     enum CodingKeys: String, CodingKey {
         case photos
         case page

@@ -3,7 +3,7 @@ import HTTPTypes
 import HTTPTypesFoundation // Required for URLSession extension
 
 /// Provides access to all API Methods. Can be used to perform API requests.
-public final class APIProvider {
+public struct APIProvider: Sendable {
     /// Contains a JSON Decoder which can be reused.
     public static let jsonDecoder: JSONDecoder = {
         let decoder = JSONDecoder()
@@ -33,7 +33,7 @@ public final class APIProvider {
     ///
     /// - Parameter request: A created request with a response type.
     /// - Returns: Convert and return the response to the specified type.
-    public func request<R: Decodable>(_ request: inout APIRequest<R>) async throws -> R {
+    public mutating func request<R: Decodable>(_ request: inout APIRequest<R>) async throws -> R {
         let (data, _) = try await makeRequest(&request)
         do {
             let response = try Self.jsonDecoder.decode(R.self, from: data)
@@ -43,11 +43,13 @@ public final class APIProvider {
         }
     }
 
-    private func makeRequest<R: Decodable>(_ request: inout APIRequest<R>) async throws -> (Data, HTTPResponse) {
+    private mutating func makeRequest<R: Decodable>(_ request: inout APIRequest<R>) async throws -> (Data, HTTPTypes.HTTPResponse) {
         // Update fields
         request.scheme = configuration.scheme
         request.authority = configuration.authority
         request.headerFields[.authorization] = configuration.apiKey
+        request.headerFields[.accept] = "application/json"
+        request.headerFields[.contentType] = "application/json"
 
         do {
             let (data, response) = try await requestSession.data(for: request.httpRequest)
@@ -69,7 +71,7 @@ public final class APIProvider {
 // MARK: - APIQuota
 
 /// How many requests you have left in your monthly quota.
-public struct APIQuota {
+public struct APIQuota: Sendable {
     /// Your total request limit for the monthly period.
     public let requestLimit: Int
 
@@ -123,13 +125,13 @@ public enum APIError: LocalizedError, Equatable {
     }
 }
 
-// MARK: - Protocols
+// MARK: - APIRequestSession
 
-// Protocol for serving stubs.
-public protocol APIRequestSession {
-    func data(for request: HTTPRequest) async throws -> (Data, HTTPTypes.HTTPResponse)
+/// Protocol for serving stubs.
+public protocol APIRequestSession: Sendable {
+    func data(for request: HTTPTypes.HTTPRequest) async throws -> (Data, HTTPTypes.HTTPResponse)
 }
 
 // `HTTPTypesFoundation` implements
-// `func data(for request: HTTPRequest) async throws -> (Data, HTTPTypes.HTTPResponse)`
+// `func data(for request: HTTPTypes.HTTPRequest) async throws -> (Data, HTTPTypes.HTTPResponse)`
 extension URLSession: APIRequestSession {}

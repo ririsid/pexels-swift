@@ -1,16 +1,5 @@
 import XCTest
-@testable import Pexels
 import struct HTTPTypes.HTTPRequest
-
-final class APIEndpointTests: XCTestCase {
-    func testPageWithNoValue() {
-        XCTAssertNil(APIParameterTypes.Page(nil))
-    }
-
-    func testPerPageWithNoValue() {
-        XCTAssertNil(APIParameterTypes.PerPage(nil))
-    }
-}
 
 final class HTTPTypesTests: XCTestCase {
     func testHTTPRequestWithQueryItems() {
@@ -20,15 +9,15 @@ final class HTTPTypesTests: XCTestCase {
         let requestWithNoValueQueryItem = HTTPRequest(method: .get, scheme: nil, authority: nil, path: "/", queryItems: [URLQueryItem(name: "no_value", value: nil)])
         let requestWithNoPath = HTTPRequest(method: .get, scheme: nil, authority: nil, path: nil, queryItems: [URLQueryItem(name: "query", value: "nature")])
 
-        XCTAssert(requestWithQueryItems.method == .get)
-        XCTAssert(requestWithQueryItems.path == "/search?query=nature")
-        XCTAssert(requestWithNoQueryItems.method == .get)
-        XCTAssert(requestWithNoQueryItems.path == "/")
-        XCTAssert(requestWithEmptyQueryItems.method == .get)
-        XCTAssert(requestWithEmptyQueryItems.path == "/")
-        XCTAssert(requestWithNoValueQueryItem.method == .get)
-        XCTAssert(requestWithNoValueQueryItem.path == "/")
-        XCTAssert(requestWithNoPath.method == .get)
-        XCTAssert(requestWithNoPath.path == "?query=nature")
+        XCTAssertEqual(requestWithQueryItems.method, .get)
+        XCTAssertEqual(requestWithQueryItems.path, "/search?query=nature")
+        XCTAssertEqual(requestWithNoQueryItems.method, .get)
+        XCTAssertEqual(requestWithNoQueryItems.path, "/")
+        XCTAssertEqual(requestWithEmptyQueryItems.method, .get)
+        XCTAssertEqual(requestWithEmptyQueryItems.path, "/")
+        XCTAssertEqual(requestWithNoValueQueryItem.method, .get)
+        XCTAssertEqual(requestWithNoValueQueryItem.path, "/")
+        XCTAssertEqual(requestWithNoPath.method, .get)
+        XCTAssertEqual(requestWithNoPath.path, "?query=nature")
     }
 }

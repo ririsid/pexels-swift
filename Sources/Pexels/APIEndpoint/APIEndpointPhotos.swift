@@ -2,10 +2,12 @@ import Foundation
 import struct HTTPTypes.HTTPRequest
 
 extension APIEndpoint.Photos {
-    private enum Path: String {
-        case search = "/v1/search"
-        case curated = "/v1/curated"
-        case photo = "/v1/photos"
+    private enum Path {
+        static let search: String = "/v1/search"
+        static let curated: String = "/v1/curated"
+        static func photo(id: Int) -> String {
+            return "/v1/photos/\(id)"
+        }
     }
     
     /// This endpoint enables you to search Pexels for any topic that you would like. For example your query could be something broad like `Nature`, `Tigers`, `People`. Or it could be something specific like `Group of people working`.
@@ -27,7 +29,7 @@ extension APIEndpoint.Photos {
         let page = APIParameterTypes.Page(page)
         let perPage = APIParameterTypes.PerPage(perPage)
         let parameters = Array<APIParameterable?>(arrayLiteral: query, orientation, size, color, locale, page, perPage)
-        return APIRequest(method: .get, path: Path.search.rawValue, parameters: parameters)
+        return APIRequest(method: .get, path: Path.search, parameters: parameters)
     }
 
     /// This endpoint enables you to receive real-time photos curated by the Pexels team.
@@ -42,7 +44,7 @@ extension APIEndpoint.Photos {
         let page = APIParameterTypes.Page(page)
         let perPage = APIParameterTypes.PerPage(perPage)
         let parameters = Array<APIParameterable?>(arrayLiteral: page, perPage)
-        return APIRequest(method: .get, path: Path.curated.rawValue, parameters: parameters)
+        return APIRequest(method: .get, path: Path.curated, parameters: parameters)
     }
 
     /// Retrieve a specific `Photo` from its id.
@@ -51,7 +53,6 @@ extension APIEndpoint.Photos {
     ///   - id: The id of the photo you are requesting.
     /// - Returns: A request to retrieve photo.
     public static func photo(id: Int) throws -> APIRequest<Photo> {
-        let path = Path.photo.rawValue + "/\(id)"
-        return APIRequest(method: .get, path: path)
+        return APIRequest(method: .get, path: Path.photo(id: id))
     }
 }

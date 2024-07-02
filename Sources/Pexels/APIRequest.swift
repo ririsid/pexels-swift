@@ -1,6 +1,7 @@
 import Foundation
 import HTTPTypes
 
+/// An HTTP request to make requests to API services.
 public struct APIRequest<Response: Decodable> {
     private(set) var httpRequest: HTTPRequest
 

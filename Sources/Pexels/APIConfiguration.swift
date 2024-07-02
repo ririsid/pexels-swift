@@ -21,6 +21,7 @@ public struct APIConfiguration: APIConfigurable {
 
 // MARK: - APIConfigurable
 
+/// API configuration protocol.
 public protocol APIConfigurable {
     var apiKey: String { get }
     var scheme: String? { get }

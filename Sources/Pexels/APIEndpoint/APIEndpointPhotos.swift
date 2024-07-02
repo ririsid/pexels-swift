@@ -12,7 +12,7 @@ extension APIEndpoint.Photos {
     ///   - query: The search query. `Ocean`, `Tigers`, `Pears`, etc.
     ///   - orientation: Desired photo orientation. The current supported orientations are: `landscape`, `portrait` or `square`.
     ///   - size: Minimum photo size. The current supported sizes are: `large`(24MP), `medium`(12MP) or `small`(4MP).
-    ///   - color: Desired photo color. Supported colors: `red`, `orange`, `yellow`, `green`, `turquoise`, `blue`, `violet`, `pink`, `brown`, `black`, `gray`, `white` or any hexidecimal color code (eg. `#ffffff`).
+    ///   - color: Desired photo color. Supported colors: `red`, `orange`, `yellow`, `green`, `turquoise`, `blue`, `violet`, `pink`, `brown`, `black`, `gray`, `white` or any hexadecimal color code (eg. `#ffffff`).
     ///   - locale: The locale of the search you are performing. The current supported locales are: `'en-US'` `'pt-BR'` `'es-ES'` `'ca-ES'` `'de-DE'` `'it-IT'` `'fr-FR'` `'sv-SE'` `'id-ID'` `'pl-PL'` `'ja-JP'` `'zh-TW'` `'zh-CN'` `'ko-KR'` `'th-TH'` `'nl-NL'` `'hu-HU'` `'vi-VN'` `'cs-CZ'` `'da-DK'` `'fi-FI'` `'uk-UA'` `'el-GR'` `'ro-RO'` `'nb-NO'` `'sk-SK'` `'tr-TR'` `'ru-RU'`.
     ///   - page: The page number you are requesting. `Default: 1`
     ///   - perPage: The number of results you are requesting per page. `Default: 15` `Max: 80`

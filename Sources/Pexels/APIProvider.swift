@@ -19,7 +19,7 @@ public final class APIProvider {
     /// A request session.
     private let requestSession: APIRequestSession
 
-    /// Creates a new APIProvider instance which can be used to perform API Requests to the Pexels API.
+    /// Creates a new `APIProvider` instance which can be used to perform API Requests to the Pexels API.
     ///
     /// - Parameters:
     ///   - configuration: The configuration needed to set up the API Provider including all needed information for performing API requests.
@@ -29,6 +29,10 @@ public final class APIProvider {
         self.requestSession = session
     }
 
+    /// Takes the created request, makes a request to the API service, and returns a response of the specified type.
+    ///
+    /// - Parameter request: A created request with a response type.
+    /// - Returns: Convert and return the response to the specified type.
     public func request<R: Decodable>(_ request: inout APIRequest<R>) async throws -> R {
         let (data, _) = try await makeRequest(&request)
         do {
@@ -75,6 +79,9 @@ public struct APIQuota {
     /// When the currently monthly period will roll over.
     public let resetTime: Date
 
+    /// Get usage information from header fields in HTTP responses.
+    ///
+    /// - Parameter headerFields: Header fields in HTTP responses.
     init?(headerFields: HTTPTypes.HTTPFields) {
         guard let xRatelimitLimit = headerFields[.xRatelimitLimit],
               let requestLimit = Int(xRatelimitLimit),
@@ -92,11 +99,13 @@ public struct APIQuota {
 
 // MARK: - APIError
 
+/// API error type.
 public enum APIError: LocalizedError, Equatable {
     case httpTypeConversionError
     case responseError(statusCode: Int, reasonPhrase: String)
     case decodingError(localizedDescription: String)
 
+    /// A localized message describing what error occurred.
     public var errorDescription: String? {
         switch self {
         case .httpTypeConversionError:
@@ -116,6 +125,7 @@ public enum APIError: LocalizedError, Equatable {
 
 // MARK: - Protocols
 
+// Protocol for serving stubs.
 public protocol APIRequestSession {
     func data(for request: HTTPRequest) async throws -> (Data, HTTPTypes.HTTPResponse)
 }

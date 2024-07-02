@@ -1,21 +1,34 @@
 import Foundation
 
+/// Parameter types in use by API services.
 public enum APIParameterTypes {
     /// The search query. `Ocean`, `Tigers`, `Pears`, etc.
     public struct Query: RawRepresentable, APIParameterable {
+        /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = String
 
+        /// The corresponding value of the raw type.
         public let rawValue: RawValue
 
+        /// Creates a new instance with a query.
+        ///
+        /// - Parameter query: A query.
         public init?(_ query: String) {
             guard Self.isValid(query) else { return nil }
             self.rawValue = query
         }
 
+        /// Creates a new instance with the specified raw value.
+        ///
+        /// - Parameter rawValue: A raw value.
         public init?(rawValue: RawValue) {
             self.init(rawValue)
         }
 
+        /// Returns `true` if the value is valid.
+        ///
+        /// - Parameter value: A value.
+        /// - Returns: `true` if the value is valid; otherwise, `false`.
         private static func isValid(_ value: RawValue) -> Bool {
             return !value.isEmpty
         }
@@ -30,13 +43,14 @@ public enum APIParameterTypes {
 
     /// Minimum photo size. The current supported sizes are: `large`(24MP), `medium`(12MP) or `small`(4MP).
     public enum Size: String, APIParameterable {
-        case large /// 24MP
-        case medium /// 12MP
-        case small /// 4MP
+        case large // 24MP
+        case medium // 12MP
+        case small // 4MP
     }
 
-    /// Desired photo color. Supported colors: `red`, `orange`, `yellow`, `green`, `turquoise`, `blue`, `violet`, `pink`, `brown`, `black`, `gray`, `white` or any hexidecimal color code (eg. `#ffffff`).
+    /// Desired photo color. Supported colors: `red`, `orange`, `yellow`, `green`, `turquoise`, `blue`, `violet`, `pink`, `brown`, `black`, `gray`, `white` or any hexadecimal color code (eg. `#ffffff`).
     public struct Color: RawRepresentable, APIParameterable {
+        /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = String
 
         /// Colors with names. Supported colors: `red`, `orange`, `yellow`, `green`, `turquoise`, `blue`, `violet`, `pink`, `brown`, `black`, `gray`, `white`.
@@ -68,30 +82,50 @@ public enum APIParameterTypes {
         public static let gray = Color(named: .gray)
         public static let white = Color(named: .white)
 
+        /// Convert a hex color code to `Color`.
+        ///
+        /// - Parameter hexColorCode: A hexadecimal color code.
         public static func hexColorCode(_ hexColorCode: String) -> Color? {
             return Color(hexColorCode: hexColorCode)
         }
 
+        /// The corresponding value of the raw type.
         public let rawValue: RawValue
 
+        /// Creates a new instance with a value.
+        ///
+        /// - Parameter value: A value.
         private init(value: String) {
             self.rawValue = value
         }
 
+        /// Creates a new instance with the specified raw value.
+        ///
+        /// - Parameter rawValue: A raw value.
         public init?(rawValue: RawValue) {
             guard Self.isValid(rawValue) else { return nil }
             self.init(value: rawValue)
         }
 
+        /// Creates a new instance with a hex color code.
+        ///
+        /// - Parameter hexColorCode: A hexadecimal color code.
         private init?(hexColorCode: String) {
             guard hexColorCode.isValidHexColorCode else { return nil }
             self.init(value: hexColorCode)
         }
 
+        /// Creates a new instance with a `Named` color.
+        ///
+        /// - Parameter named: A `Named` color.
         private init(named: Named) {
             self.init(value: named.rawValue)
         }
 
+        /// Returns `true` if the value is valid.
+        ///
+        /// - Parameter value: A value.
+        /// - Returns: `true` if the value is valid; otherwise, `false`.
         private static func isValid(_ value: RawValue) -> Bool {
             return Named.contains(value)
             || value.isValidHexColorCode
@@ -132,21 +166,34 @@ public enum APIParameterTypes {
 
     /// The page number you are requesting. `Default: 1`
     public struct Page: RawRepresentable, APIParameterable {
+        /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
 
+        /// The default value.
         public static let `default`: RawValue = 1
 
+        /// The corresponding value of the raw type.
         public let rawValue: RawValue
 
+        /// Creates a new instance with a page number.
+        ///
+        /// - Parameter page: A page number.
         public init?(_ page: Int) {
             guard Self.isValid(page) else { return nil }
             self.rawValue = page
         }
 
+        /// Creates a new instance with the specified raw value.
+        ///
+        /// - Parameter rawValue: A raw value.
         public init?(rawValue: RawValue) {
             self.init(rawValue)
         }
 
+        /// Returns `true` if the value is valid.
+        ///
+        /// - Parameter value: A value.
+        /// - Returns: `true` if the value is valid; otherwise, `false`.
         private static func isValid(_ value: RawValue) -> Bool {
             return value >= Self.default
         }
@@ -154,24 +201,39 @@ public enum APIParameterTypes {
 
     /// The number of results you are requesting per page. `Default: 15` `Max: 80`
     public struct PerPage: RawRepresentable, APIParameterable {
+        /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
 
+        /// The default value.
         public static let `default`: Int = 15
+
+        /// The minimum value.
         public static let min: Int = 1
+
+        /// The maximum value.
         public static let max: Int = 80
 
+        /// The corresponding value of the raw type.
         public let rawValue: RawValue
         public let name: String = "per_page"
 
+        /// Creates a new instance with a per page number.
+        ///
+        /// - Parameter perPage: A per page number.
         public init?(_ perPage: Int) {
             guard Self.isValid(perPage) else { return nil }
             self.rawValue = perPage
         }
 
+        /// Creates a new instance with the specified raw value.
         public init?(rawValue: RawValue) {
             self.init(rawValue)
         }
 
+        /// Returns `true` if the value is valid.
+        ///
+        /// - Parameter value: A value.
+        /// - Returns: `true` if the value is valid; otherwise, `false`.
         private static func isValid(_ value: RawValue) -> Bool {
             return Self.min...Self.max ~= value
         }
@@ -179,6 +241,9 @@ public enum APIParameterTypes {
 }
 
 extension APIParameterTypes.Page {
+    /// Creates a new instance with a page number. (for `Optional` value)
+    ///
+    /// - Parameter page: A page number.
     init?(_ page: Int?) {
         guard let page else { return nil }
         self.init(page)
@@ -186,6 +251,9 @@ extension APIParameterTypes.Page {
 }
 
 extension APIParameterTypes.PerPage {
+    /// Creates a new instance with a per page number. (for `Optional` value)
+    ///
+    /// - Parameter perPage: A per page number.
     init?(_ perPage: Int?) {
         guard let perPage else { return nil }
         self.init(perPage)
@@ -194,13 +262,27 @@ extension APIParameterTypes.PerPage {
 
 // MARK: - APIParameterable
 
+/// Convertible types to API parameters.
 public protocol APIParameterable {
+    /// The parameter name.
     var name: String { get }
+
+    /// The parameter value.
     var value: String? { get }
 }
 
 extension APIParameterable {
+    // Nested types of `APIParameterTypes` use lowercased type names.
     public var name: String {
         String(describing: type(of: self)).lowercased()
+    }
+}
+
+extension URLQueryItem {
+    /// Creates a new instance with a `APIParameterable` value.
+    ///
+    /// - Parameter apiParameter: A `APIParameterble` value.
+    init(_ apiParameter: APIParameterable) {
+        self.init(name: apiParameter.name, value: apiParameter.value)
     }
 }

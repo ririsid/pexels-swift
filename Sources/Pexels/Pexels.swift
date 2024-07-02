@@ -1,3 +1,5 @@
+// Type aliases
+
 typealias PexelsAPIConfiguration = Pexels.APIConfiguration
 typealias PexelsAPIError = Pexels.APIError
 typealias PexelsAPIEndpoint = Pexels.APIEndpoint

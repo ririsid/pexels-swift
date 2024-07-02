@@ -5,9 +5,10 @@ extension APIEndpoint.Photos {
     private enum Path: String {
         case search = "/v1/search"
         case curated = "/v1/curated"
+        case photo = "/v1/photos"
     }
     
-    ///  This endpoint enables you to search Pexels for any topic that you would like. For example your query could be something broad like `Nature`, `Tigers`, `People`. Or it could be something specific like `Group of people working`.
+    /// This endpoint enables you to search Pexels for any topic that you would like. For example your query could be something broad like `Nature`, `Tigers`, `People`. Or it could be something specific like `Group of people working`.
     ///
     /// - Parameters:
     ///   - query: The search query. `Ocean`, `Tigers`, `Pears`, etc.
@@ -42,5 +43,15 @@ extension APIEndpoint.Photos {
         let perPage = APIParameterTypes.PerPage(perPage)
         let parameters = Array<APIParameterable?>(arrayLiteral: page, perPage)
         return APIRequest(method: .get, path: Path.curated.rawValue, parameters: parameters)
+    }
+
+    /// Retrieve a specific `Photo` from its id.
+    ///
+    /// - Parameters:
+    ///   - id: The id of the photo you are requesting.
+    /// - Returns: A request to retrieve photo.
+    public static func photo(id: Int) throws -> APIRequest<Photo> {
+        let path = Path.photo.rawValue + "/\(id)"
+        return APIRequest(method: .get, path: path)
     }
 }

@@ -61,19 +61,19 @@ public struct Photo: Decodable, Identifiable, Equatable {
 
     /// The `Photographer` object.
     public struct Photographer: Decodable, Identifiable, Equatable {
+        /// The id of the photographer.
+        public let id: Int
+
         /// The name of the photographer who took the photo.
         public let name: String
 
         /// The URL of the photographer's Pexels profile.
         public let url: URL
 
-        /// The id of the photographer.
-        public let id: Int
-
         enum CodingKeys: String, CodingKey {
+            case id = "photographer_id"
             case name = "photographer"
             case url = "photographer_url"
-            case id = "photographer_id"
         }
     }
 

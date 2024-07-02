@@ -22,4 +22,11 @@ final class APIEndpointVideosTests: XCTestCase {
         XCTAssert(request.method == .get)
         XCTAssert(request.path == "/videos/popular?min_width=1024&min_height=1024&min_duration=1&max_duration=60&page=1&per_page=15")
     }
+
+    func testGetVideo() throws {
+        let request = try APIEndpoint.Videos.video(id: 2499611)
+
+        XCTAssert(request.method == .get)
+        XCTAssert(request.path == "/videos/videos/2499611")
+    }
 }

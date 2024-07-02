@@ -5,6 +5,7 @@ extension APIEndpoint.Videos {
     private enum Path: String {
         case search = "/videos/search"
         case popular = "/videos/popular"
+        case video = "/videos/videos"
     }
 
     /// This endpoint enables you to search Pexels for any topic that you would like. For example your query could be something broad like `Nature`, `Tigers`, `People`. Or it could be something specific like `Group of people working`.
@@ -47,5 +48,15 @@ extension APIEndpoint.Videos {
         let perPage = APIParameterTypes.PerPage(perPage)
         let parameters = Array<APIParameterable?>(arrayLiteral: minWidth, minHeight, minDuration, maxDuration, page, perPage)
         return APIRequest(method: .get, path: Path.popular.rawValue, parameters: parameters)
+    }
+
+    /// Retrieve a specific `Video` from its id.
+    ///
+    /// - Parameters:
+    ///   - id: The id of the video you are requesting.
+    /// - Returns: A request to retrieve video.
+    public static func video(id: Int) throws -> APIRequest<Video> {
+        let path = Path.video.rawValue + "/\(id)"
+        return APIRequest(method: .get, path: path)
     }
 }

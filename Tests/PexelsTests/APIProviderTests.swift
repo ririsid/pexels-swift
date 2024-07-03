@@ -34,7 +34,7 @@ final class APIProviderTests: XCTestCase {
 
         XCTAssertEqual(photos.page, 1)
     }
-    
+
     func testAPIErrorHTTPTypeConversionError() async throws {
         let configuration = StubAPIConfiguration(apiKey: apiKey, scheme: nil, authority: nil)
         var provider = APIProvider(configuration: configuration)
@@ -68,10 +68,12 @@ final class APIProviderTests: XCTestCase {
             let _ = try await provider.request(&request)
         } catch {
             let error = try XCTUnwrap(error as? APIError)
-            XCTAssertEqual(error, APIError.decodingError(localizedDescription: "The data couldn’t be read because it is missing."))
+            XCTAssertEqual(error, APIError.decodingError(localizedDescription: error.localizedDescription))
         }
     }
 }
+
+// MARK: - Pagination
 
 final class APIPaginationTests: XCTestCase {
     var apiKey: String!
@@ -123,6 +125,8 @@ final class APIPaginationTests: XCTestCase {
     }
 }
 
+// MARK: - APIQuota
+
 final class APIQuotaTests: XCTestCase {
     var apiKey: String!
     var configuration: APIConfiguration!
@@ -158,5 +162,37 @@ final class APIQuotaTests: XCTestCase {
         let _ = try? await provider.request(&request)
 
         XCTAssertNil(provider.quota)
+    }
+}
+
+// MARK: - Middleware
+
+final class MiddlewareTests: XCTestCase {
+    var apiKey: String!
+    var configuration: APIConfiguration!
+
+    override func setUp() async throws {
+        self.apiKey = try XCTUnwrap(TestingUtility.getPexelsAPIKey())
+        self.configuration = APIConfiguration(with: apiKey)
+    }
+
+    func testMiddleware() async throws {
+        let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos"))
+        let stubSession = StubResponseAPIRequestSession(data: photosData)
+        var provider = APIProvider(configuration: configuration, session: stubSession)
+        provider.middleware.use(TestingMiddleware())
+        var request = try APIEndpoint.Photos.search(query: "nature")
+        let photos = try await provider.request(&request)
+
+        XCTAssertEqual(photos.page, 1)
+    }
+}
+
+private struct TestingMiddleware: Middleware {
+    func respond(to request: HTTPTypes.HTTPRequest, chainingTo next: Responder) async throws -> (Data, HTTPTypes.HTTPResponse) {
+        print("Start a request: \(request.url!)")
+        let (data, response) = try await next.respond(to: request)
+        print("Received a response: \(response.status)")
+        return (data, response)
     }
 }

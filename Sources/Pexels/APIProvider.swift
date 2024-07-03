@@ -10,14 +10,20 @@ public struct APIProvider: Sendable {
         return decoder
     }()
 
+    /// Middleware.
+    public lazy var middleware: Middlewares = Middlewares()
+
     /// Your monthly quota.
-    private(set) var quota: APIQuota? = nil
+    private(set) lazy var quota: APIQuota? = nil
 
     /// The configuration needed to set up the API Provider including all needed information for performing API requests.
     private let configuration: APIConfigurable
 
     /// A request session.
     private let requestSession: APIRequestSession
+
+    /// A request responder.
+    private let requestResponder: APIRequestResponder
 
     /// Creates a new `APIProvider` instance which can be used to perform API Requests to the Pexels API.
     ///
@@ -27,6 +33,7 @@ public struct APIProvider: Sendable {
     public init(configuration: APIConfigurable, session: APIRequestSession = URLSession.shared) {
         self.configuration = configuration
         self.requestSession = session
+        self.requestResponder = APIRequestResponder(with: session)
     }
 
     /// Takes the created request, makes a request to the API service, and returns a response of the specified type.
@@ -34,16 +41,6 @@ public struct APIProvider: Sendable {
     /// - Parameter request: A created request with a response type.
     /// - Returns: Convert and return the response to the specified type.
     public mutating func request<R: Decodable>(_ request: inout APIRequest<R>) async throws -> R {
-        let (data, _) = try await makeRequest(&request)
-        do {
-            let response = try Self.jsonDecoder.decode(R.self, from: data)
-            return response
-        } catch {
-            throw APIError.decodingError(localizedDescription: error.localizedDescription)
-        }
-    }
-
-    private mutating func makeRequest<R: Decodable>(_ request: inout APIRequest<R>) async throws -> (Data, HTTPTypes.HTTPResponse) {
         // Update fields
         request.scheme = configuration.scheme
         request.authority = configuration.authority
@@ -51,19 +48,14 @@ public struct APIProvider: Sendable {
         request.headerFields[.accept] = "application/json"
         request.headerFields[.contentType] = "application/json"
 
+        let responder = middleware.respond(chainingTo: requestResponder)
+        let (data, response) = try await responder.respond(to: request.httpRequest)
+        quota = APIQuota(headerFields: response.headerFields)
         do {
-            let (data, response) = try await requestSession.data(for: request.httpRequest)
-            quota = APIQuota(headerFields: response.headerFields)
-            guard response.status.kind == .successful else {
-                throw APIError.responseError(statusCode: response.status.code, reasonPhrase: response.status.reasonPhrase)
-            }
-            return (data, response)
+            let response = try Self.jsonDecoder.decode(R.self, from: data)
+            return response
         } catch {
-            if error is APIError {
-                throw error
-            } else {
-                throw APIError.httpTypeConversionError
-            }
+            throw APIError.decodingError(localizedDescription: error.localizedDescription)
         }
     }
 }
@@ -135,3 +127,34 @@ public protocol APIRequestSession: Sendable {
 // `HTTPTypesFoundation` implements
 // `func data(for request: HTTPTypes.HTTPRequest) async throws -> (Data, HTTPTypes.HTTPResponse)`
 extension URLSession: APIRequestSession {}
+
+// MARK: - APIRequestResponder
+
+/// Responder used by `APIProvider`.
+private struct APIRequestResponder: Responder {
+    /// A request session.
+    private let requestSession: APIRequestSession
+
+    /// Create a API request responder.
+    ///
+    /// - Parameter session: A request session.
+    init(with session: APIRequestSession) {
+        self.requestSession = session
+    }
+
+    func respond(to request: HTTPTypes.HTTPRequest) async throws -> (Data, HTTPTypes.HTTPResponse) {
+        do {
+            let (data, response) = try await requestSession.data(for: request)
+            guard response.status.kind == .successful else {
+                throw APIError.responseError(statusCode: response.status.code, reasonPhrase: response.status.reasonPhrase)
+            }
+            return (data, response)
+        } catch {
+            if error is APIError {
+                throw error
+            } else {
+                throw APIError.httpTypeConversionError
+            }
+        }
+    }
+}

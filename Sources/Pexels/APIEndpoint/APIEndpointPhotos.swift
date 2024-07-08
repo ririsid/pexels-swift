@@ -9,7 +9,7 @@ extension APIEndpoint.Photos {
             return "/v1/photos/\(id)"
         }
     }
-    
+
     /// This endpoint enables you to search Pexels for any topic that you would like. For example your query could be something broad like `Nature`, `Tigers`, `People`. Or it could be something specific like `Group of people working`.
     ///
     /// - Parameters:

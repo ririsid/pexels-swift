@@ -18,7 +18,7 @@ extension HTTPTypes.HTTPRequest {
                   path: Self.makePath(path, with: queryItems),
                   headerFields: headerFields)
     }
-    
+
     /// Make a path combining the query items.
     ///
     /// - Parameters:
@@ -31,15 +31,15 @@ extension HTTPTypes.HTTPRequest {
         let query = queryItems.reduce("", {
             // If the value is `nil`, return early.
             guard let value = $1.value else { return $0 }
-            
+
             // The first query uses "?" and the remaining queries use "&".
             let separator = $0.isEmpty ? "?" : "&"
             return "\($0)\(separator)\($1.name)=\(value)"
         })
-        
+
         // If the query is empty, returns the path.
         guard !query.isEmpty else { return path }
-        
+
         return "\(path ?? "")\(query)"
     }
 }

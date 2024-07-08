@@ -19,7 +19,7 @@ extension HTTPTypes.HTTPRequest {
                   parameters: parameters?.compactMap({ $0 }),
                   headerFields: headerFields)
     }
-    
+
     /// Create an HTTP request with values of pseudo header fields and header fields.
     /// 
     /// - Parameters:

@@ -154,6 +154,29 @@ if let nextPageURL = response.nextPageURL {
 }
 ```
 
+### Middleware
+
+Middleware works between receiving and responding to requests.
+
+```swift
+struct LoggingMiddleware: Middleware {
+    func respond(to request: HTTPTypes.HTTPRequest, chainingTo next: Responder) async throws -> (Data, HTTPTypes.HTTPResponse) {
+        print("Start a request: \(request.url!)")
+        let (data, response) = try await next.respond(to: request)
+        print("Received a response: \(response.status)")
+        return (data, response)
+    }
+}
+```
+
+You can add multiple middleware to the API provider.
+
+```swift
+provider.middleware.use(LoggingMiddleware(), OtherMiddleware())
+var request = try APIEndpoint.Photos.search(query: "nature")
+let response = try await provider.request(&request)
+```
+
 ## Tests
 
 To run the tests you need to provide your own api key. You can get one from here: https://www.pexels.com/api/new/

@@ -82,12 +82,12 @@ public struct APIQuota: Sendable {
               let xRatelimitRemaining = headerFields[.xRatelimitRemaining],
               let requestRemaining = Int(xRatelimitRemaining),
               let xRatelimitReset = headerFields[.xRatelimitReset],
-              let timestamp = Double(xRatelimitReset) else {
+              let resetTime = Date(timestamp: xRatelimitReset) else {
             return nil
         }
         self.requestLimit = requestLimit
         self.requestRemaining = requestRemaining
-        self.resetTime = Date(timeIntervalSince1970: timestamp)
+        self.resetTime = resetTime
     }
 }
 

@@ -21,16 +21,24 @@ extension Pageable {
     /// URL for the previous page of results, if applicable.
     public var previousPage: Int? {
         guard let url = previousPageURL,
-              let value = url.queryParameterValue(for: "page"),
-              let page = Int(value) else { return nil }
+              let page = getPage(from: url) else { return nil }
         return page
     }
 
     /// URL for the next page of results, if applicable.
     public var nextPage: Int? {
         guard let url = nextPageURL,
-              let value = url.queryParameterValue(for: "page"),
-              let page = Int(value) else { return nil }
+              let page = getPage(from: url) else { return nil }
+        return page
+    }
+
+    /// Get the page value from the URL.
+    ///
+    /// - Parameter url: The URL.
+    /// - Returns: The page value.
+    private func getPage(from url: URL) -> Int? {
+        guard let value = url.queryParameterValue(for: APIParameterTypes.Page.name),
+            let page = Int(value) else { return nil }
         return page
     }
 }

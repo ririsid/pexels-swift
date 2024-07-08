@@ -50,11 +50,12 @@ public struct APIRequest<Response: Decodable> {
     }
 
     /// Create a  request with values of pseudo header fields and header fields.
+    ///
     /// - Parameters:
     ///   - method: The request method.
     ///   - path: The value of the ":path" pseudo header field.
     ///   - parameters: The parameters that conforming `APIParameterable`.
     public init(method: HTTPRequest.Method, path: String, parameters: [APIParameterable?]? = nil) {
-        self.httpRequest = HTTPRequest(method: .get, scheme: nil, authority: nil, path: path, parameters: parameters)
+        self.httpRequest = HTTPRequest(method: method, scheme: nil, authority: nil, path: path, parameters: parameters)
     }
 }

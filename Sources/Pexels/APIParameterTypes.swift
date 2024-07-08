@@ -4,6 +4,8 @@ import Foundation
 public enum APIParameterTypes {
     /// The search query. `Ocean`, `Tigers`, `Pears`, etc.
     public struct Query: RawRepresentable, APIParameterable {
+        static public let name: String = "query"
+
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = String
 
@@ -29,6 +31,8 @@ public enum APIParameterTypes {
 
     /// Desired photo orientation. The current supported orientations are: `landscape`, `portrait` or `square`.
     public enum Orientation: String, APIParameterable {
+        static public var name: String { "orientation" }
+
         case landscape
         case portrait
         case square
@@ -36,6 +40,8 @@ public enum APIParameterTypes {
 
     /// Minimum photo size. The current supported sizes are: `large`(24MP), `medium`(12MP) or `small`(4MP).
     public enum Size: String, APIParameterable {
+        static public var name: String { "size" }
+
         case large // 24MP
         case medium // 12MP
         case small // 4MP
@@ -43,6 +49,8 @@ public enum APIParameterTypes {
 
     /// Desired photo color. Supported colors: `red`, `orange`, `yellow`, `green`, `turquoise`, `blue`, `violet`, `pink`, `brown`, `black`, `gray`, `white` or any hexadecimal color code (eg. `#ffffff`).
     public struct Color: RawRepresentable, APIParameterable {
+        static public let name: String = "color"
+
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = String
 
@@ -119,6 +127,8 @@ public enum APIParameterTypes {
 
     /// The locale of the search you are performing. The current supported locales are: `'en-US'` `'pt-BR'` `'es-ES'` `'ca-ES'` `'de-DE'` `'it-IT'` `'fr-FR'` `'sv-SE'` `'id-ID'` `'pl-PL'` `'ja-JP'` `'zh-TW'` `'zh-CN'` `'ko-KR'` `'th-TH'` `'nl-NL'` `'hu-HU'` `'vi-VN'` `'cs-CZ'` `'da-DK'` `'fi-FI'` `'uk-UA'` `'el-GR'` `'ro-RO'` `'nb-NO'` `'sk-SK'` `'tr-TR'` `'ru-RU'`.
     public enum Locale: String, APIParameterable {
+        static public var name: String { "locale" }
+
         case enUS = "en-US"
         case ptBR = "pt-BR"
         case esES = "es-ES"
@@ -151,6 +161,8 @@ public enum APIParameterTypes {
 
     /// The page number you are requesting. `Default: 1`
     public struct Page: RawRepresentable, APIParameterable {
+        static public let name: String = "page"
+
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
 
@@ -179,6 +191,8 @@ public enum APIParameterTypes {
 
     /// The number of results you are requesting per page. `Default: 15` `Max: 80`
     public struct PerPage: RawRepresentable, APIParameterable {
+        static public let name: String = "per_page"
+        
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
 
@@ -193,8 +207,6 @@ public enum APIParameterTypes {
 
         /// The corresponding value of the raw type.
         public let rawValue: RawValue
-
-        public let name: String = "per_page"
 
         /// Creates a new instance with the specified raw value.
         public init?(rawValue: RawValue) {
@@ -213,13 +225,13 @@ public enum APIParameterTypes {
 
     /// The minimum width in pixels of the returned videos.
     public struct MinWidth: RawRepresentable, APIParameterable {
+        static public let name: String = "min_width"
+
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
 
         /// The corresponding value of the raw type.
         public let rawValue: RawValue
-
-        public let name: String = "min_width"
 
         /// Creates a new instance with the specified raw value.
         public init?(rawValue: RawValue) {
@@ -238,13 +250,13 @@ public enum APIParameterTypes {
 
     /// The minimum height in pixels of the returned videos.
     public struct MinHeight: RawRepresentable, APIParameterable {
+        static public let name: String = "min_height"
+
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
 
         /// The corresponding value of the raw type.
         public let rawValue: RawValue
-
-        public let name: String = "min_height"
 
         /// Creates a new instance with the specified raw value.
         public init?(rawValue: RawValue) {
@@ -263,13 +275,13 @@ public enum APIParameterTypes {
 
     /// The minimum duration in seconds of the returned videos.
     public struct MinDuration: APIParameterable, RawRepresentable {
+        static public let name: String = "min_duration"
+
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
 
         /// The corresponding value of the raw type.
         public let rawValue: RawValue
-
-        public let name: String = "min_duration"
 
         /// Creates a new instance with the specified raw value.
         public init?(rawValue: RawValue) {
@@ -288,13 +300,13 @@ public enum APIParameterTypes {
 
     /// The maximum duration in seconds of the returned videos.
     public struct MaxDuration: APIParameterable, RawRepresentable {
+        static public let name: String = "max_duration"
+
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
 
         /// The corresponding value of the raw type.
         public let rawValue: RawValue
-
-        public let name: String = "max_duration"
 
         /// Creates a new instance with the specified raw value.
         public init?(rawValue: RawValue) {
@@ -313,85 +325,17 @@ public enum APIParameterTypes {
 
     /// The type of media you are requesting. If not given or if given with an invalid value, all media will be returned. Supported values are `photos` and `videos`.
     public enum MediaType: String, APIParameterable {
+        static public var name: String { "type" }
+
         case photos
         case videos
-
-        public var name: String { "type" }
     }
 
     /// The order of items in the media collection. Supported values are: `asc`, `desc`. `Default: asc`
     public enum Sort: String, APIParameterable {
+        static public var name: String { "sort" }
+
         case ascending = "asc"
         case descending = "desc"
-    }
-}
-
-// MARK: - APIParameterable
-
-/// Convertible types to API parameters.
-public protocol APIParameterable {
-    /// The parameter name.
-    var name: String { get }
-
-    /// The parameter value.
-    var value: String? { get }
-}
-
-extension APIParameterable {
-    // Nested types of `APIParameterTypes` use lowercased type names.
-    public var name: String {
-        String(describing: type(of: self)).lowercased()
-    }
-}
-
-extension APIParameterable where Self: RawRepresentable<String> {
-    public var value: String? {
-        rawValue
-    }
-
-    /// Creates a new instance with a value.
-    ///
-    /// - Parameter value: A value.
-    public init?(_ value: Self.RawValue) {
-        guard Self.isValid(value) else { return nil }
-        self.init(rawValue: value)
-    }
-
-    /// Returns `true` if the value is valid.
-    ///
-    /// - Parameter value: The value.
-    /// - Returns: `true` if the value is valid; otherwise, `false`.
-    internal static func isValid(_ value: Self.RawValue) -> Bool {
-        return !value.isEmpty
-    }
-}
-
-extension APIParameterable where Self: RawRepresentable<Int> {
-    public var value: String? {
-        String(rawValue)
-    }
-
-    /// Creates a new instance with a value.
-    ///
-    /// - Parameter value: A value.
-    public init?(_ value: Self.RawValue) {
-        self.init(rawValue: value)
-    }
-
-    /// Creates a new instance with a value.
-    ///
-    /// - Parameter value: A value.
-    public init?(_ value: Self.RawValue?) {
-        guard let value else { return nil }
-        self.init(rawValue: value)
-    }
-}
-
-extension URLQueryItem {
-    /// Creates a new instance with a `APIParameterable` value.
-    ///
-    /// - Parameter apiParameter: A `APIParameterble` value.
-    init(_ apiParameter: APIParameterable) {
-        self.init(name: apiParameter.name, value: apiParameter.value)
     }
 }

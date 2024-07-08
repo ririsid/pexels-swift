@@ -8,8 +8,8 @@ extension URL {
     func queryParameterValue(for name: String) -> String? {
         guard let urlComponents = URLComponents(url: self, resolvingAgainstBaseURL: true),
               let queryItems = urlComponents.queryItems,
-              let pageItem = queryItems.first(where: { $0.name == name }),
-              let value = pageItem.value else { return nil }
+              let queryItem = queryItems.first(where: { $0.name == name }),
+              let value = queryItem.value else { return nil }
         return value
     }
 }

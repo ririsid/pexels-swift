@@ -139,6 +139,21 @@ if let quota = provider.quota {
 }
 ```
 
+### Pagination
+
+```swift
+// First page
+var request = try APIEndpoint.Photos.search(query: "nature")
+let response = try await provider.request(&request)
+
+// Next page
+if let nextPageURL = response.nextPageURL {
+    var nextPageRequest = request.makeRequest(with: nextPageURL)
+    let nextPageResponse = try await provider.request(&nextPageRequest)
+    print("Page: \(nextPageResponse.page)") // Page: 2
+}
+```
+
 ## Tests
 
 To run the tests you need to provide your own api key. You can get one from here: https://www.pexels.com/api/new/

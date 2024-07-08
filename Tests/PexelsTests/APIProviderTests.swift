@@ -104,6 +104,17 @@ final class APIPaginationTests: XCTestCase {
         XCTAssertNil(photos.previousPage)
     }
 
+    func testPreviousPageRequest() async throws {
+        let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos_last_page"))
+        let stubSession = StubResponseAPIRequestSession(data: photosData)
+        var provider = APIProvider(configuration: configuration, session: stubSession)
+        var request = try APIEndpoint.Photos.search(query: "nature")
+        let photos = try await provider.request(&request)
+        let previousPageRequest = request.makeRequest(with: photos.previousPageURL!)
+
+        XCTAssertEqual(previousPageRequest.path, "/v1/search/?page=1&per_page=1&query=nature")
+    }
+
     func testNextPage() async throws {
         let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos"))
         let stubSession = StubResponseAPIRequestSession(data: photosData)
@@ -122,6 +133,17 @@ final class APIPaginationTests: XCTestCase {
         let photos = try await provider.request(&request)
 
         XCTAssertNil(photos.nextPage)
+    }
+
+    func testNextPageRequest() async throws {
+        let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos"))
+        let stubSession = StubResponseAPIRequestSession(data: photosData)
+        var provider = APIProvider(configuration: configuration, session: stubSession)
+        var request = try APIEndpoint.Photos.search(query: "nature")
+        let photos = try await provider.request(&request)
+        let nextPageRequest = request.makeRequest(with: photos.nextPageURL!)
+
+        XCTAssertEqual(nextPageRequest.path, "/v1/search/?page=2&per_page=1&query=nature")
     }
 }
 

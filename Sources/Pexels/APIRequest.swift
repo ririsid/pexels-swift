@@ -58,4 +58,14 @@ public struct APIRequest<Response: Decodable> {
     public init(method: HTTPRequest.Method, path: String, parameters: [APIParameterable?]? = nil) {
         self.httpRequest = HTTPRequest(method: method, scheme: nil, authority: nil, path: path, parameters: parameters)
     }
+
+    /// Make a new request with URL.
+    ///
+    /// - Parameter url: The URL.
+    /// - Returns: A new request.
+    public func makeRequest(with url: URL) -> APIRequest {
+        var newRequest = APIRequest(method: method, path: path!)
+        newRequest.httpRequest = HTTPRequest(url: url)
+        return newRequest
+    }
 }

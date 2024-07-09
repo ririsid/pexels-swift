@@ -129,28 +129,44 @@ let response = try await provider.request(&request)
 
 ### Request Statistics
 
+The `quota` in the provider can be used to access the request statistics.
+
 ```swift
 var request = try APIEndpoint.Photos.search(query: "nature")
 let response = try await provider.request(&request)
 if let quota = provider.quota {
     print("Request limit: \(quota.requestLimit)")
+    // Prints "Request limit: 25000"
     print("Request remaining: \(quota.requestRemaining)")
+    // Prints "Request remaining: 24938"
     print("Reset date: \(quota.resetTime)")
+    // Prints "Reset date: 2024-07-12 16:04:57 +0000"
 }
 ```
 
 ### Pagination
 
+You need to pass the page url in the response to the `APIEndpoint.(Photos|Videos|Collections).page(url:)` method. 
+
 ```swift
-// First page
-var request = try APIEndpoint.Photos.search(query: "nature")
+// Request second page
+var request = try APIEndpoint.Photos.search(query: "nature", page: 2)
 let response = try await provider.request(&request)
 
-// Next page
+// Request previous page
+if let previousPageURL = response.previousPageURL {
+    var previousPageRequest = APIEndpoint.Photos.page(url: previousPageURL)
+    let previousPageResponse = try await provider.request(&previousPageRequest)
+    print("Page: \(previousPageResponse.page)")
+    // Prints "Page: 1" 
+}
+
+// Request next page
 if let nextPageURL = response.nextPageURL {
-    var nextPageRequest = request.makeRequest(with: nextPageURL)
+    var nextPageRequest = APIEndpoint.Photos.page(url: nextPageURL)
     let nextPageResponse = try await provider.request(&nextPageRequest)
-    print("Page: \(nextPageResponse.page)") // Page: 2
+    print("Page: \(nextPageResponse.page)")
+    // Prints "Page: 3"
 }
 ```
 

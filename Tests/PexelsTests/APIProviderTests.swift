@@ -85,7 +85,7 @@ final class APIPaginationTests: XCTestCase {
     }
 
     func testPreviousPage() async throws {
-        let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos_second_page"))
+        let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos_last_page"))
         let stubSession = StubResponseAPIRequestSession(data: photosData)
         var provider = APIProvider(configuration: configuration, session: stubSession)
         var request = try APIEndpoint.Photos.search(query: "nature")
@@ -102,17 +102,6 @@ final class APIPaginationTests: XCTestCase {
         let photos = try await provider.request(&request)
 
         XCTAssertNil(photos.previousPage)
-    }
-
-    func testPreviousPageRequest() async throws {
-        let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos_last_page"))
-        let stubSession = StubResponseAPIRequestSession(data: photosData)
-        var provider = APIProvider(configuration: configuration, session: stubSession)
-        var request = try APIEndpoint.Photos.search(query: "nature")
-        let photos = try await provider.request(&request)
-        let previousPageRequest = request.makeRequest(with: photos.previousPageURL!)
-
-        XCTAssertEqual(previousPageRequest.path, "/v1/search/?page=1&per_page=1&query=nature")
     }
 
     func testNextPage() async throws {
@@ -135,15 +124,43 @@ final class APIPaginationTests: XCTestCase {
         XCTAssertNil(photos.nextPage)
     }
 
-    func testNextPageRequest() async throws {
-        let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos"))
+    func testPhotosPageRequest() async throws {
+        let photosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "photos_second_page"))
         let stubSession = StubResponseAPIRequestSession(data: photosData)
         var provider = APIProvider(configuration: configuration, session: stubSession)
-        var request = try APIEndpoint.Photos.search(query: "nature")
+        var request = try APIEndpoint.Photos.search(query: "nature", page: 2, perPage: 1)
         let photos = try await provider.request(&request)
-        let nextPageRequest = request.makeRequest(with: photos.nextPageURL!)
+        let previousPageRequest = APIEndpoint.Photos.page(url: photos.previousPageURL!)
+        let nextPageRequest = APIEndpoint.Photos.page(url: photos.nextPageURL!)
 
-        XCTAssertEqual(nextPageRequest.path, "/v1/search/?page=2&per_page=1&query=nature")
+        XCTAssertEqual(previousPageRequest.path, "/v1/search/?page=1&per_page=1&query=nature")
+        XCTAssertEqual(nextPageRequest.path, "/v1/search/?page=3&per_page=1&query=nature")
+    }
+
+    func testVideosPageRequest() async throws {
+        let videosData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "videos_second_page"))
+        let stubSession = StubResponseAPIRequestSession(data: videosData)
+        var provider = APIProvider(configuration: configuration, session: stubSession)
+        var request = try APIEndpoint.Videos.search(query: "nature", page: 2, perPage: 1)
+        let videos = try await provider.request(&request)
+        let previousPageRequest = APIEndpoint.Videos.page(url: videos.previousPageURL!)
+        let nextPageRequest = APIEndpoint.Videos.page(url: videos.nextPageURL!)
+
+        XCTAssertEqual(previousPageRequest.path, "/v1/videos/search/?page=1&per_page=1&query=nature")
+        XCTAssertEqual(nextPageRequest.path, "/v1/videos/search/?page=3&per_page=1&query=nature")
+    }
+
+    func testCollectionsPageRequest() async throws {
+        let collectionsData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "collections_second_page"))
+        let stubSession = StubResponseAPIRequestSession(data: collectionsData)
+        var provider = APIProvider(configuration: configuration, session: stubSession)
+        var request = try APIEndpoint.Collections.featured(page: 2, perPage: 1)
+        let collections = try await provider.request(&request)
+        let previousPageRequest = APIEndpoint.Collections.page(url: collections.previousPageURL!)
+        let nextPageRequest = APIEndpoint.Collections.page(url: collections.nextPageURL!)
+
+        XCTAssertEqual(previousPageRequest.path, "/v1/collections/featured/?page=1&per_page=1")
+        XCTAssertEqual(nextPageRequest.path, "/v1/collections/featured/?page=3&per_page=1")
     }
 }
 

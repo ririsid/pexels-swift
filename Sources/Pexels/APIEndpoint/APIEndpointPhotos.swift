@@ -55,4 +55,13 @@ extension APIEndpoint.Photos {
     public static func photo(id: Int) throws -> APIRequest<Photo> {
         return APIRequest(method: .get, path: Path.photo(id: id))
     }
+
+    /// This endpoint returns all photos by the page URL in the response.
+    ///
+    /// - Parameters:
+    ///   - pageURL: The page URL in the response.
+    /// - Returns: A request to retrieve photos.
+    public static func page(url: URL) -> APIRequest<Photos> {
+        return APIRequest(method: .get, url: url)
+    }
 }

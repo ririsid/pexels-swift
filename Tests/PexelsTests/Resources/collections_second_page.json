@@ -1,0 +1,18 @@
+{
+    "page": 2,
+    "per_page": 1,
+    "collections": [
+        {
+            "id": "5bjcwss",
+            "title": "Faceless Aesthetic Inspo",
+            "description": "",
+            "private": false,
+            "media_count": 178,
+            "photos_count": 178,
+            "videos_count": 0
+        }
+    ],
+    "total_results": 1087,
+    "next_page": "https://api.pexels.com/v1/collections/featured/?page=3&per_page=1",
+    "prev_page": "https://api.pexels.com/v1/collections/featured/?page=1&per_page=1"
+}

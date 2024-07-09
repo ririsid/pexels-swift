@@ -39,15 +39,24 @@ extension APIEndpoint.Collections {
     /// This endpoint returns all the media (photos and videos) within a single collection. You can filter to only receive photos or videos using the `type` parameter.
     ///
     /// - Parameters:
-    ///   - id: The id of the video you are requesting.
+    ///   - id: The id of the collection you are requesting.
     ///   - sort: The order of items in the media collection. Supported values are: `asc`, `desc`. `Default: asc`
     ///   - page: The page number you are requesting. `Default: 1`
     ///   - perPage: The number of results you are requesting per page. `Default: 15` `Max: 80`
-    /// - Returns: A request to retrieve video.
+    /// - Returns: A request to retrieve collection.
     public static func media(id: String, type: APIParameterTypes.MediaType? = nil, sort: APIParameterTypes.Sort? = nil, page: Int? = nil, perPage: Int? = nil) throws -> APIRequest<CollectionMedia> {
         let page = APIParameterTypes.Page(page)
         let perPage = APIParameterTypes.PerPage(perPage)
         let parameters = Array<APIParameterable?>(arrayLiteral: type, sort, page, perPage)
         return APIRequest(method: .get, path: Path.media(id: id), parameters: parameters)
+    }
+
+    /// This endpoint returns all collections by the page URL in the response.
+    ///
+    /// - Parameters:
+    ///   - pageURL: The page URL in the response.
+    /// - Returns: A request to retrieve collections.
+    public static func page(url: URL) -> APIRequest<Collections> {
+        return APIRequest(method: .get, url: url)
     }
 }

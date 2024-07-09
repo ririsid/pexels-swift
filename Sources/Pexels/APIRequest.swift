@@ -59,13 +59,12 @@ public struct APIRequest<Response: Decodable> {
         self.httpRequest = HTTPRequest(method: method, scheme: nil, authority: nil, path: path, parameters: parameters)
     }
 
-    /// Make a new request with URL.
+    /// Create a request with a method, and a URL.
     ///
-    /// - Parameter url: The URL.
-    /// - Returns: A new request.
-    public func makeRequest(with url: URL) -> APIRequest {
-        var newRequest = APIRequest(method: method, path: path!)
-        newRequest.httpRequest = HTTPRequest(url: url)
-        return newRequest
+    /// - Parameters:
+    ///   - method: The request method.
+    ///   - url: The URL to populate the scheme, authority, and path pseudo header fields.
+    public init(method: HTTPRequest.Method, url: URL) {
+        self.httpRequest = HTTPRequest(method: method, url: url)
     }
 }

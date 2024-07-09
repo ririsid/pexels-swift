@@ -19,7 +19,7 @@ extension APIEndpoint.Videos {
     ///   - locale: The locale of the search you are performing. The current supported locales are: `'en-US'` `'pt-BR'` `'es-ES'` `'ca-ES'` `'de-DE'` `'it-IT'` `'fr-FR'` `'sv-SE'` `'id-ID'` `'pl-PL'` `'ja-JP'` `'zh-TW'` `'zh-CN'` `'ko-KR'` `'th-TH'` `'nl-NL'` `'hu-HU'` `'vi-VN'` `'cs-CZ'` `'da-DK'` `'fi-FI'` `'uk-UA'` `'el-GR'` `'ro-RO'` `'nb-NO'` `'sk-SK'` `'tr-TR'` `'ru-RU'`.
     ///   - page: The page number you are requesting. `Default: 1`
     ///   - perPage: The number of results you are requesting per page. `Default: 15` `Max: 80`
-    /// - Returns: A request to retrieve photos.
+    /// - Returns: A request to retrieve videos.
     public static func search(query: String, orientation: APIParameterTypes.Orientation? = nil, size: APIParameterTypes.Size? = nil, locale: APIParameterTypes.Locale? = nil, page: Int? = nil, perPage: Int? = nil) throws -> APIRequest<Videos> {
         // The `query` is required.
         guard let query = APIParameterTypes.Query(query) else {
@@ -40,7 +40,7 @@ extension APIEndpoint.Videos {
     ///   - maxDuration: The maximum duration in seconds of the returned videos.
     ///   - page: The page number you are requesting. `Default: 1`
     ///   - perPage: The number of results you are requesting per page. `Default: 15` `Max: 80`
-    /// - Returns: A request to retrieve photos.
+    /// - Returns: A request to retrieve videos.
     public static func popular(minWidth: Int? = nil, minHeight: Int? = nil, minDuration: Int? = nil, maxDuration: Int? = nil, page: Int? = nil, perPage: Int? = nil) throws -> APIRequest<Videos> {
         let minWidth = APIParameterTypes.MinWidth(minWidth)
         let minHeight = APIParameterTypes.MinHeight(minHeight)
@@ -59,5 +59,14 @@ extension APIEndpoint.Videos {
     /// - Returns: A request to retrieve video.
     public static func video(id: Int) throws -> APIRequest<Video> {
         return APIRequest(method: .get, path: Path.video(id: id))
+    }
+
+    /// This endpoint returns all videos by the page URL in the response.
+    ///
+    /// - Parameters:
+    ///   - pageURL: The page URL in the response.
+    /// - Returns: A request to retrieve videos.
+    public static func page(url: URL) -> APIRequest<Videos> {
+        return APIRequest(method: .get, url: url)
     }
 }

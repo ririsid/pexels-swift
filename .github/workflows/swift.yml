@@ -23,3 +23,11 @@ jobs:
       run: swift build -v
     - name: Run tests
       run: swift test -v
+    - name: Generate documentation
+      run: |
+        swift package --allow-writing-to-directory ./docs \
+          generate-documentation --target Pexels \
+          --disable-indexing \
+          --transform-for-static-hosting \
+          --hosting-base-path pexels-swift \
+          --output-path ./docs

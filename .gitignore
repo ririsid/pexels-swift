@@ -8,3 +8,7 @@ DerivedData/
 .vscode/
 .netrc
 Package.resolved
+
+# DocC generated files
+.docc-build
+docs/

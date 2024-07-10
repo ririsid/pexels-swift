@@ -3,6 +3,7 @@
 The Pexels Swift library is a convenient wrapper around the Pexels API that lets you access the full Pexels content library, including photos and videos, using Swift.
 
 ## Table of Contents
+
 1. [Installation](#installation)
 2. [Documentation](#documentation)
 3. [Usage](#usage)
@@ -29,7 +30,8 @@ Add the dependency to any targets you've declared in your manifest:
 
 ## Documentation
 
-See the API docs [here](https://www.pexels.com/api/documentation/)
+- [Documentation for this library](https://ririsid.github.io/pexels-swift/documentation/pexels/)
+- [Documentation for Pexels API](https://www.pexels.com/api/documentation/)
 
 ## Usage
 
@@ -43,9 +45,8 @@ let configuration = APIConfiguration(with: apiKey)
 var provider = APIProvider(configuration: configuration)
 var request = try APIEndpoint.Photos.search(query: "nature")
 let response = try await provider.request(&request)
-response.photos.forEach {
-    print($0.url)
-}
+print("Total results: \(response.totalResults)")
+// Prints "Total results: 8000"
 ```
 
 ### Create an API Provider
@@ -197,7 +198,7 @@ let response = try await provider.request(&request)
 
 To run the tests you need to provide your own api key. You can get one from here: https://www.pexels.com/api/new/
 
-#### In the terminal
+### In Terminal
 
 ```
 PEXELS_API_KEY=<YOUR PEXELS API KEY> swift test

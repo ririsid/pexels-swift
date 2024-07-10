@@ -1,5 +1,9 @@
 # Pexels Swift Library
 
+<a href="https://github.com/ririsid/pexels-swift/actions?query=workflow%3ACI">
+  <img src="https://github.com/ririsid/pexels-swift/actions/workflows/ci.yml/badge.svg"/>
+</a>
+
 The Pexels Swift library is a convenient wrapper around the Pexels API that lets you access the full Pexels content library, including photos and videos, using Swift.
 
 ## Table of Contents

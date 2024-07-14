@@ -4,10 +4,10 @@ import Foundation
 public enum APIParameterTypes {
     /// The search query. `Ocean`, `Tigers`, `Pears`, etc.
     public struct Query: RawRepresentable, APIParameterable {
-        static public let name: String = "query"
-
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = String
+
+        static public let name: String = "query"
 
         /// The corresponding value of the raw type.
         public let rawValue: RawValue
@@ -49,10 +49,10 @@ public enum APIParameterTypes {
 
     /// Desired photo color. Supported colors: `red`, `orange`, `yellow`, `green`, `turquoise`, `blue`, `violet`, `pink`, `brown`, `black`, `gray`, `white` or any hexadecimal color code (eg. `#ffffff`).
     public struct Color: RawRepresentable, APIParameterable {
-        static public let name: String = "color"
-
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = String
+
+        static public let name: String = "color"
 
         /// Colors with names. Supported colors: `red`, `orange`, `yellow`, `green`, `turquoise`, `blue`, `violet`, `pink`, `brown`, `black`, `gray`, `white`.
         private enum Named: String, CaseIterable {
@@ -161,10 +161,10 @@ public enum APIParameterTypes {
 
     /// The page number you are requesting. `Default: 1`
     public struct Page: RawRepresentable, APIParameterable {
-        static public let name: String = "page"
-
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
+
+        static public let name: String = "page"
 
         /// The default value.
         public static let `default`: RawValue = 1
@@ -191,10 +191,10 @@ public enum APIParameterTypes {
 
     /// The number of results you are requesting per page. `Default: 15` `Max: 80`
     public struct PerPage: RawRepresentable, APIParameterable {
-        static public let name: String = "per_page"
-        
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
+
+        static public let name: String = "per_page"
 
         /// The default value.
         public static let `default`: Int = 15
@@ -225,10 +225,10 @@ public enum APIParameterTypes {
 
     /// The minimum width in pixels of the returned videos.
     public struct MinWidth: RawRepresentable, APIParameterable {
-        static public let name: String = "min_width"
-
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
+
+        static public let name: String = "min_width"
 
         /// The corresponding value of the raw type.
         public let rawValue: RawValue
@@ -250,10 +250,10 @@ public enum APIParameterTypes {
 
     /// The minimum height in pixels of the returned videos.
     public struct MinHeight: RawRepresentable, APIParameterable {
-        static public let name: String = "min_height"
-
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
+
+        static public let name: String = "min_height"
 
         /// The corresponding value of the raw type.
         public let rawValue: RawValue
@@ -275,10 +275,10 @@ public enum APIParameterTypes {
 
     /// The minimum duration in seconds of the returned videos.
     public struct MinDuration: APIParameterable, RawRepresentable {
-        static public let name: String = "min_duration"
-
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
+
+        static public let name: String = "min_duration"
 
         /// The corresponding value of the raw type.
         public let rawValue: RawValue
@@ -300,10 +300,10 @@ public enum APIParameterTypes {
 
     /// The maximum duration in seconds of the returned videos.
     public struct MaxDuration: APIParameterable, RawRepresentable {
-        static public let name: String = "max_duration"
-
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
+
+        static public let name: String = "max_duration"
 
         /// The corresponding value of the raw type.
         public let rawValue: RawValue

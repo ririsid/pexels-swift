@@ -9,7 +9,7 @@ final class ModelMediaTests: XCTestCase {
         self.apiKey = try XCTUnwrap(TestingUtility.getPexelsAPIKey())
         self.configuration = APIConfiguration(with: apiKey)
     }
-    
+
     func testMedia() async throws {
         let mediaData = try XCTUnwrap(TestingUtility.dataFromJSON(forResource: "collection_media"))
         let stubSession = StubResponseAPIRequestSession(data: mediaData)

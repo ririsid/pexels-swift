@@ -4,7 +4,6 @@
 xcuserdata/
 DerivedData/
 .swiftpm/
-!.swiftpm/*.xctestplan
 .vscode/
 .netrc
 Package.resolved

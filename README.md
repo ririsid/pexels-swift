@@ -207,18 +207,3 @@ To run the tests you need to provide your own api key. You can get one from here
 ```
 PEXELS_API_KEY=<YOUR PEXELS API KEY> swift test
 ```
-
-### In Xcode
-
-In the `.swiftpm/Pexels.xctestplan` file, find and change `<YOUR PEXELS API KEY>`, and run the Test.
-
-```swift
-{
-  "configurations" : [
-    {
-      "options" : {
-        "environmentVariableEntries" : [
-          {
-            "key" : "PEXELS_API_KEY",
-            "value" : "<YOUR PEXELS API KEY>"
-```

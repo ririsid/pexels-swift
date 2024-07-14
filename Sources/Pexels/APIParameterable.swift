@@ -1,7 +1,7 @@
 import Foundation
 
 /// Convertible types to API parameters.
-public protocol APIParameterable {
+public protocol APIParameterable: Sendable {
     /// The parameter name.
     static var name: String { get }
 

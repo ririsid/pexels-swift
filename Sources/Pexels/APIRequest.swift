@@ -2,7 +2,7 @@ import Foundation
 import HTTPTypes
 
 /// An HTTP request to make requests to API services.
-public struct APIRequest<Response: Decodable> {
+public struct APIRequest<Response: Decodable>: Sendable {
     private(set) var httpRequest: HTTPRequest
 
     /// The HTTP request method.

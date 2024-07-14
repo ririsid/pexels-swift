@@ -274,7 +274,7 @@ public enum APIParameterTypes {
     }
 
     /// The minimum duration in seconds of the returned videos.
-    public struct MinDuration: APIParameterable, RawRepresentable {
+    public struct MinDuration: RawRepresentable, APIParameterable {
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
 
@@ -299,7 +299,7 @@ public enum APIParameterTypes {
     }
 
     /// The maximum duration in seconds of the returned videos.
-    public struct MaxDuration: APIParameterable, RawRepresentable {
+    public struct MaxDuration: RawRepresentable, APIParameterable {
         /// The raw type that can be used to represent all values of the conforming type.
         public typealias RawValue = Int
 

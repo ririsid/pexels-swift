@@ -14,7 +14,7 @@ public struct APIProvider: Sendable {
     public lazy var middleware: Middlewares = Middlewares()
 
     /// Your monthly quota.
-    private(set) lazy var quota: APIQuota? = nil
+    public private(set) lazy var quota: APIQuota? = nil
 
     /// The configuration needed to set up the API Provider including all needed information for performing API requests.
     private let configuration: APIConfigurable

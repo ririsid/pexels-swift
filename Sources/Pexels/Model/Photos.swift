@@ -9,8 +9,8 @@ public struct Photos: Decodable, Equatable, Pageable {
     public let perPage: Int
     public let totalResults: Int
 
-    internal let previousPageURL: URL?
-    internal let nextPageURL: URL?
+    public let previousPageURL: URL?
+    public let nextPageURL: URL?
 
     enum CodingKeys: String, CodingKey {
         case photos

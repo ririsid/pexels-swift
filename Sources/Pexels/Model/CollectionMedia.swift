@@ -14,8 +14,8 @@ public struct CollectionMedia: Decodable, Equatable, Identifiable, Pageable {
     public let perPage: Int
     public let totalResults: Int
 
-    internal let previousPageURL: URL?
-    internal let nextPageURL: URL?
+    public let previousPageURL: URL?
+    public let nextPageURL: URL?
 
     /// Creates a new instance by decoding from the given decoder.
     public init(from decoder: any Decoder) throws {

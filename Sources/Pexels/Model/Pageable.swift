@@ -1,6 +1,6 @@
 import Foundation
 
-protocol Pageable {
+public protocol Pageable {
     /// The current page number.
     var page: Int { get }
 
